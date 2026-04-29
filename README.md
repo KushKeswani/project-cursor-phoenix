@@ -40,6 +40,22 @@ If you use an **LLM or coding agent** (e.g. Cursor) on this repo, the intended d
 
 3. Use **`py scripts\...`** or **`python scripts\...`** from the repo root the same way as the Unix examples in this file (`Data-DataBento` layout is unchanged—see **`docs/DATABENTO_KNOWLEDGE.md`**).
 
+4. **Git LFS:** Historical bars under **`Data-DataBento/`** and **`Data-ProjectX/`** are stored with [**Git LFS**](https://git-lfs.github.com/). Install Git for Windows (includes `git`), then in an elevated or normal shell run **`git lfs install`** once. After **`git clone`**, run **`git lfs pull`** in the repo root so parquet/CSV downloads completely.
+
+## What this repo tracks (full tree)
+
+This fork is configured **without a `.gitignore`**: generated outputs, local data, and **`.env`** can all be committed so the VPS matches your machine.
+
+- **Git LFS:** Paths matching **`Data-DataBento/**`** and **`Data-ProjectX/**`** use LFS (see **`.gitattributes`**) because GitHub rejects single files **> 100 MB** in plain Git. Everything is still “in the repo”; clones must run **`git lfs pull`**.
+
+- **Secrets:** If **`.env`** was ever pushed to a **public** GitHub repo, treat those keys as **burned**—revoke Telegram bot tokens, ProjectX/Gateway credentials, etc., generate new ones, and update **`.env`** on each machine. Prefer **private** repos if you insist on committing secrets.
+
+## What is omitted (vs full Agent Phoenix monorepo)
+
+- **`optimization/`**, **`csharp/`** .NET backtest ports — not bundled here.
+
+- **`reports/`** may still be recreated locally when you run backtests (not required to be empty on clone).
+
 ## What is included
 
 | Area | Location | Role |
@@ -68,12 +84,6 @@ cp .env.example .env
 Load order (same as `python -m projectx.main`): optional **`PROJECTX_DOTENV_PATH`** → **`<Project Cursor>/.env`** → **`projectx/.env`**. If the same key appears in both root and `projectx/.env`, **`projectx/.env` wins**.
 
 Set **`PROJECTX_TELEGRAM_BOT_TOKEN`** and **`PROJECTX_TELEGRAM_CHAT_ID`** here for Telegram notifications without touching nested paths only.
-
-## What is omitted (vs full repo)
-
-- **`reports/`** generated outputs — recreate by running scripts.
-- **`optimization/`**, **`csharp/`** .NET backtest ports — not required for Python + NT8 + ProjectX workflows here.
-- **Large `Data-DataBento/*.csv` / `.parquet`** — see `Data-DataBento/README.md` and `docs/DATABENTO_KNOWLEDGE.md`; copy from your environment.
 
 ## Python environment
 
