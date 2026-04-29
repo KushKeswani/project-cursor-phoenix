@@ -65,3 +65,17 @@
 **Blockers:** Still no MNQ bars in bundle; §4 income not claimed.
 
 **Scheduling:** `cron` example: `0 */4 * * * cd "/path/Project Cursor" && python3 scripts/phoenix_agent_cycle.py --run-backtest --smoke-full` once data exists.
+
+
+## 2026-04-29 (session) — README run-to-completion + GitHub remote
+
+**Attempted:** Document expectation that AI runs until validation is complete; publish repo for Windows VPS clone.
+
+**Edits:**
+
+- `README.md` — new **Autonomous AI: run until the work is actually finished** section (stop only on user interrupt or hard blocker; log + Telegram; pointer to `LLM_AUTONOMOUS_WORKER_PROMPT.md`); **Cloning on a Windows VPS** (venv, pip, `py scripts\…`); public repo link.
+- `.gitignore` — ignore all `Data-DataBento/**` except `README.md` + `normalization_summary.csv`; ignore `reports/`; ignore `projectx/.env`.
+
+**Git:** `git init`, initial commit, `gh repo create` as KushKeswani → **https://github.com/KushKeswani/project-cursor-phoenix** ; follow-up commit for README URL.
+
+**Note:** Large parquet/CSV stays local; after `git clone` on VPS, copy `Data-DataBento` data per `docs/DATABENTO_KNOWLEDGE.md`.
