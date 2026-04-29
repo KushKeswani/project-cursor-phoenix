@@ -1,0 +1,5 @@
+instrument,rows,start,end,contracts,out_path
+CL,1615200,2021-07-11 18:07:00,2026-03-08 19:59:00,57,/Users/kushkeswani/trading/Agent Pheonix/python_algos/data/newdata_consolidated/CL.parquet
+MGC,2126121,2020-02-09 18:00:00,2026-03-08 19:59:00,31,/Users/kushkeswani/trading/Agent Pheonix/python_algos/data/newdata_consolidated/MGC.parquet
+MNQ,2180554,2020-01-01 18:00:00,2026-03-08 19:59:00,25,/Users/kushkeswani/trading/Agent Pheonix/python_algos/data/newdata_consolidated/MNQ.parquet
+YM,2103848,2020-02-09 18:00:00,2026-03-08 19:59:00,25,/Users/kushkeswani/trading/Agent Pheonix/python_algos/data/newdata_consolidated/YM.parquet

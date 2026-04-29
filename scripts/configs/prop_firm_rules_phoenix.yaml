@@ -1,0 +1,119 @@
+# Phoenix quarter — user-specified eval numbers (verify vs live firm rules).
+# 50k: $3,000 profit target, $2,000 trailing drawdown.
+# 150k: $9,000 profit target, $4,500 trailing drawdown.
+# Lucid rows include 40% consistency (best day / cumulative profit at pass).
+#
+# "Funded survival" rows use an enormous profit target so paths almost never "pass";
+# bust_pct ≈ probability of hitting trailing (or DLL) within eval_window_days — a coarse risk proxy.
+
+profiles:
+  phoenix_topstep_50k_eval:
+    label: "Phoenix Topstep-style 50K eval"
+    account_size_label: "50K"
+    profit_target_usd: 3000
+    trailing_drawdown_usd: 2000
+    daily_loss_limit_usd: null
+    consistency_max_best_day_fraction: null
+    min_trading_days: 1
+    eval_window_days: 60
+    max_contracts_note: "User Phoenix params"
+
+  phoenix_topstep_50k_funded_survival:
+    label: "Phoenix Topstep 50K funded — 120d survival proxy (no PT)"
+    account_size_label: "50K"
+    profit_target_usd: 1000000000
+    trailing_drawdown_usd: 2000
+    daily_loss_limit_usd: null
+    consistency_max_best_day_fraction: null
+    min_trading_days: 1
+    eval_window_days: 120
+    max_contracts_note: "bust% = trail/DLL hit in 120 resampled days"
+
+  phoenix_lucid_50k_eval:
+    label: "Phoenix Lucid-style 50K eval (40% consistency)"
+    account_size_label: "50K"
+    profit_target_usd: 3000
+    trailing_drawdown_usd: 2000
+    daily_loss_limit_usd: null
+    consistency_max_best_day_fraction: 0.40
+    min_trading_days: 1
+    eval_window_days: 60
+    max_contracts_note: "User Phoenix params"
+
+  phoenix_lucid_50k_funded_survival:
+    label: "Phoenix Lucid 50K funded — 120d survival proxy"
+    account_size_label: "50K"
+    profit_target_usd: 1000000000
+    trailing_drawdown_usd: 2000
+    daily_loss_limit_usd: null
+    consistency_max_best_day_fraction: null
+    min_trading_days: 1
+    eval_window_days: 120
+    max_contracts_note: "Consistency not applied for survival proxy"
+
+  phoenix_topstep_150k_eval:
+    label: "Phoenix Topstep-style 150K eval"
+    account_size_label: "150K"
+    profit_target_usd: 9000
+    trailing_drawdown_usd: 4500
+    daily_loss_limit_usd: null
+    consistency_max_best_day_fraction: null
+    min_trading_days: 1
+    eval_window_days: 60
+    max_contracts_note: "User Phoenix params"
+
+  phoenix_topstep_150k_funded_survival:
+    label: "Phoenix Topstep 150K funded — 120d survival proxy"
+    account_size_label: "150K"
+    profit_target_usd: 1000000000
+    trailing_drawdown_usd: 4500
+    daily_loss_limit_usd: null
+    consistency_max_best_day_fraction: null
+    min_trading_days: 1
+    eval_window_days: 120
+    max_contracts_note: "bust% = trail hit in 120 resampled days"
+
+  phoenix_lucid_150k_eval:
+    label: "Phoenix Lucid-style 150K eval (40% consistency)"
+    account_size_label: "150K"
+    profit_target_usd: 9000
+    trailing_drawdown_usd: 4500
+    daily_loss_limit_usd: null
+    consistency_max_best_day_fraction: 0.40
+    min_trading_days: 1
+    eval_window_days: 60
+    max_contracts_note: "User Phoenix params"
+
+  phoenix_lucid_150k_funded_survival:
+    label: "Phoenix Lucid 150K funded — 120d survival proxy"
+    account_size_label: "150K"
+    profit_target_usd: 1000000000
+    trailing_drawdown_usd: 4500
+    daily_loss_limit_usd: null
+    consistency_max_best_day_fraction: null
+    min_trading_days: 1
+    eval_window_days: 120
+    max_contracts_note: "Consistency not applied for survival proxy"
+
+  # LucidFlex-style challenge (no 40% consistency); PT/trail match Topstep Phoenix rows.
+  phoenix_lucidflex_50k_eval:
+    label: "Phoenix LucidFlex-style 50K eval (no consistency)"
+    account_size_label: "50K"
+    profit_target_usd: 3000
+    trailing_drawdown_usd: 2000
+    daily_loss_limit_usd: null
+    consistency_max_best_day_fraction: null
+    min_trading_days: 1
+    eval_window_days: 60
+    max_contracts_note: "LucidFlex challenge model — verify vs live LucidFlex"
+
+  phoenix_lucidflex_150k_eval:
+    label: "Phoenix LucidFlex-style 150K eval (no consistency)"
+    account_size_label: "150K"
+    profit_target_usd: 9000
+    trailing_drawdown_usd: 4500
+    daily_loss_limit_usd: null
+    consistency_max_best_day_fraction: null
+    min_trading_days: 1
+    eval_window_days: 60
+    max_contracts_note: "LucidFlex challenge model — verify vs live LucidFlex"

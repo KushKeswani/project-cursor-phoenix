@@ -1,0 +1,708 @@
+{
+  "collection_meta": {
+    "schema_version": "1.1",
+    "last_updated": "2026-04-02",
+    "verified_against_live_rules": true,
+    "collector_notes": "Filled from live official help-center / firm pages on 2026-04-02. Mapping used: Topstep=Trading Combine + Express Funded; Lucid=LucidPro; Tradeify=Select Evaluation (funded branches into Flex or Daily, so some funded fields remain null with notes); Alpha Futures=Standard Plan; Apex=current EOD products. max_contracts_note keeps firm wording where possible."
+  },
+  "firms": [
+    {
+      "id": "topstep",
+      "display_name": "Topstep",
+      "website": "https://www.topstep.com/",
+      "account_limits": {
+        "max_concurrent_evaluations_total": null,
+        "max_concurrent_funded_accounts_total": 5,
+        "max_funded_accounts_per_account_size": null,
+        "max_qualified_or_similar_stage_accounts": null,
+        "scaling_or_live_copies_max": 1,
+        "combine_passed_accounts_allowed": 5,
+        "household_or_identity_restrictions_notes": "Single Account Policy: traders are not permitted to have multiple Topstep profiles.",
+        "other_account_cap_notes": "No limit to active Trading Combines, but purchase limit is 10 new Trading Combine subscriptions per month. Up to 5 active Express Funded Accounts. Only 1 Live Funded Account active; when a Live Funded Account is received, all Express Funded Accounts are closed.",
+        "sources": [
+          "https://help.topstep.com/en/articles/8284197-trading-combine-parameters",
+          "https://help.topstep.com/en/articles/10370307-is-there-a-limit-to-the-number-of-accounts-i-can-have",
+          "https://help.topstep.com/en/articles/8284219-can-i-have-more-than-one-funded-account"
+        ]
+      },
+      "plans": [
+        {
+          "plan_key": "combine_50k",
+          "marketing_name": "Trading Combine 50K",
+          "account_size_label": "50K",
+          "account_size_usd": 50000,
+          "evaluation": {
+            "profit_target_usd": 3000,
+            "trailing_drawdown_usd": 2000,
+            "drawdown_type": "eod_trailing_locks_at_starting_balance",
+            "daily_loss_limit_usd": 1000,
+            "consistency_max_best_day_fraction": 0.5,
+            "consistency_rule_notes": "Best day must be below 50% of profit target to pass without profit target increasing.",
+            "min_trading_days": null,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "5 lots max position size; on TopstepX this is equivalent to up to 50 micros for standard minis/micros.",
+            "activation_fee_usd": 149,
+            "other_eval_notes": "Standard path pricing is $49/month + $149 activation fee when funded; no-activation-fee path is $109/month and $0 activation fee. No limit to active combines.",
+            "pricing_reference_notes": "activation_fee_usd shown for Standard Path"
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": 2000,
+            "funded_drawdown_type": "express_funded_mll_closes_at_breach",
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": 3,
+            "max_payout_per_request_usd": 5000,
+            "profit_split_notes": "Express Funded payout eligibility uses 40% consistency and minimum 3 trading days; Topstep also states payouts are limited to 50% of eligible balance and the $5,000 cap applies only in Express Funded. Live Funded has different payout handling.",
+            "funded_consistency_notes": "Largest single trading day must be 40% or less of total net profit during payout window.",
+            "other_funded_notes": "Up to 5 active Express Funded Accounts. Only 1 Live Funded Account. Live Funded accounts currently have a different risk structure and a DLL; this object is populated for Express Funded, not Live.",
+            "payout_minimum_notes": "Not clearly stated on the source pages reviewed in this pass."
+          },
+          "sources": [
+            {
+              "kind": "url",
+              "reference": "https://help.topstep.com/en/articles/8284204-what-is-the-maximum-loss-limit",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.topstep.com/en/articles/10490293-topstepx-daily-loss-limit",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.topstep.com/en/articles/8284208-what-is-the-consistency-target",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.topstep.com/en/articles/8284209-what-does-maximum-position-size-mean",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.topstep.com/en/articles/9208217-topstep-pricing",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.topstep.com/en/articles/8284219-can-i-have-more-than-one-funded-account",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.topstep.com/en/articles/8284233-topstep-payout-policy",
+              "accessed_date": "2026-04-02"
+            }
+          ]
+        },
+        {
+          "plan_key": "combine_150k",
+          "marketing_name": "Trading Combine 150K",
+          "account_size_label": "150K",
+          "account_size_usd": 150000,
+          "evaluation": {
+            "profit_target_usd": 9000,
+            "trailing_drawdown_usd": 4500,
+            "drawdown_type": "eod_trailing_locks_at_starting_balance",
+            "daily_loss_limit_usd": 3000,
+            "consistency_max_best_day_fraction": 0.5,
+            "consistency_rule_notes": "Best day must be below 50% of profit target to pass without profit target increasing.",
+            "min_trading_days": null,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "15 lots max position size; on TopstepX this is generally equivalent to up to 150 micros for standard minis/micros.",
+            "activation_fee_usd": 149,
+            "other_eval_notes": "Standard path pricing is $149/month + $149 activation fee when funded; no-activation-fee path is $209/month and $0 activation fee.",
+            "pricing_reference_notes": "activation_fee_usd shown for Standard Path"
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": 4500,
+            "funded_drawdown_type": "express_funded_mll_closes_at_breach",
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": 3,
+            "max_payout_per_request_usd": 5000,
+            "profit_split_notes": "Express Funded payout eligibility uses 40% consistency and minimum 3 trading days; Topstep also states payouts are limited to 50% of eligible balance and the $5,000 cap applies only in Express Funded. Live Funded has different payout handling.",
+            "funded_consistency_notes": "Largest single trading day must be 40% or less of total net profit during payout window.",
+            "other_funded_notes": "Up to 5 active Express Funded Accounts. Only 1 Live Funded Account. Live Funded currently has DLL and different rules; this object is populated for Express Funded, not Live.",
+            "payout_minimum_notes": "Not clearly stated on the source pages reviewed in this pass."
+          },
+          "sources": [
+            {
+              "kind": "url",
+              "reference": "https://help.topstep.com/en/articles/8284204-what-is-the-maximum-loss-limit",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.topstep.com/en/articles/10490293-topstepx-daily-loss-limit",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.topstep.com/en/articles/8284208-what-is-the-consistency-target",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.topstep.com/en/articles/8284209-what-does-maximum-position-size-mean",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.topstep.com/en/articles/9208217-topstep-pricing",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.topstep.com/en/articles/8284219-can-i-have-more-than-one-funded-account",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.topstep.com/en/articles/8284233-topstep-payout-policy",
+              "accessed_date": "2026-04-02"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lucid",
+      "display_name": "Lucid Trading",
+      "website": "https://lucidtrading.com/",
+      "account_limits": {
+        "max_concurrent_evaluations_total": 10,
+        "max_concurrent_funded_accounts_total": 5,
+        "max_funded_accounts_per_account_size": null,
+        "max_qualified_or_similar_stage_accounts": null,
+        "scaling_or_live_copies_max": 5,
+        "combine_passed_accounts_allowed": null,
+        "household_or_identity_restrictions_notes": "Limits apply per household or family.",
+        "other_account_cap_notes": "Max 10 total across evaluations + funded. Up to 5 active funded accounts total across funded types. Up to 5 active LucidLive accounts.",
+        "sources": [
+          "https://support.lucidtrading.com/en/articles/11404617-maximum-number-of-accounts",
+          "https://lucidtrading.com/"
+        ]
+      },
+      "plans": [
+        {
+          "plan_key": "select_50k_eval",
+          "marketing_name": "LucidPro EVAL 50K",
+          "account_size_label": "50K",
+          "account_size_usd": 50000,
+          "evaluation": {
+            "profit_target_usd": 3000,
+            "trailing_drawdown_usd": 2000,
+            "drawdown_type": "eod_max_loss_limit",
+            "daily_loss_limit_usd": 1200,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "No consistency rule on LucidPro evaluation.",
+            "min_trading_days": 1,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "4 mini or 40 micros.",
+            "activation_fee_usd": 0,
+            "other_eval_notes": "One-time fee, no monthly rebilling, pass in one trading day, real-time activation in 5-30 minutes."
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": 2000,
+            "funded_drawdown_type": "static_mll_with_scaling_dll",
+            "funded_daily_loss_limit_usd": 1200,
+            "payout_increment_usd": 500,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": 2500,
+            "profit_split_notes": "90% trader / 10% Lucid Trading. First payout cap is $2,000; payouts 2+ cap at $2,500.",
+            "funded_consistency_notes": "Largest single-day profit must be no more than 40% of total profit during the payout cycle. Minimum profit goal between payout cycles is $500. Buffer balance is $52,100.",
+            "other_funded_notes": "No fixed payout window; may request any day after meeting all eligibility criteria. Fixed DLL is $1,200 and scaling DLL is 60% of peak EOD balance. No simulated payout caps beyond cycle caps.",
+            "payout_cycle_reset_notes": "Eligibility conditions reset after every approved payout."
+          },
+          "sources": [
+            {
+              "kind": "url",
+              "reference": "https://support.lucidtrading.com/en/articles/12890029-lucidpro-evaluation-account",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://support.lucidtrading.com/en/articles/12890069-lucidpro-funded-account",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://support.lucidtrading.com/en/articles/12890092-lucidpro-payouts",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://support.lucidtrading.com/en/articles/11404617-maximum-number-of-accounts",
+              "accessed_date": "2026-04-02"
+            }
+          ]
+        },
+        {
+          "plan_key": "select_150k_eval",
+          "marketing_name": "LucidPro EVAL 150K",
+          "account_size_label": "150K",
+          "account_size_usd": 150000,
+          "evaluation": {
+            "profit_target_usd": 9000,
+            "trailing_drawdown_usd": 4500,
+            "drawdown_type": "eod_max_loss_limit",
+            "daily_loss_limit_usd": 2700,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "No consistency rule on LucidPro evaluation.",
+            "min_trading_days": 1,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "10 mini or 100 micros.",
+            "activation_fee_usd": 0,
+            "other_eval_notes": "One-time fee, no monthly rebilling, pass in one trading day, real-time activation in 5-30 minutes."
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": 4500,
+            "funded_drawdown_type": "static_mll_with_scaling_dll",
+            "funded_daily_loss_limit_usd": 2700,
+            "payout_increment_usd": 500,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": 3500,
+            "profit_split_notes": "90% trader / 10% Lucid Trading. First payout cap is $3,000; payouts 2+ cap at $3,500.",
+            "funded_consistency_notes": "Largest single-day profit must be no more than 40% of total profit during the payout cycle. Minimum profit goal between payout cycles is $1,000. Buffer balance is $154,600.",
+            "other_funded_notes": "No fixed payout window; may request any day after meeting all eligibility criteria. Fixed DLL is $2,700 and scaling DLL is 60% of peak EOD balance.",
+            "payout_cycle_reset_notes": "Eligibility conditions reset after every approved payout."
+          },
+          "sources": [
+            {
+              "kind": "url",
+              "reference": "https://support.lucidtrading.com/en/articles/12890029-lucidpro-evaluation-account",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://support.lucidtrading.com/en/articles/12890069-lucidpro-funded-account",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://support.lucidtrading.com/en/articles/12890092-lucidpro-payouts",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://support.lucidtrading.com/en/articles/11404617-maximum-number-of-accounts",
+              "accessed_date": "2026-04-02"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha_futures",
+      "display_name": "Alpha Futures",
+      "website": "https://alpha-futures.com/",
+      "account_limits": {
+        "max_concurrent_evaluations_total": null,
+        "max_concurrent_funded_accounts_total": 3,
+        "max_funded_accounts_per_account_size": null,
+        "max_qualified_or_similar_stage_accounts": 3,
+        "scaling_or_live_copies_max": null,
+        "combine_passed_accounts_allowed": null,
+        "household_or_identity_restrictions_notes": "Only one username per individual is permitted, and one individual per household may use the services.",
+        "other_account_cap_notes": "Maximum allocation: Standard Account = 3 Qualified Accounts; Advanced Account = 3 Qualified Accounts; Zero Account = 5 Qualified Accounts. Any user with an active Standard or Advanced Qualified account is limited to 3.",
+        "sources": [
+          "https://help.alpha-futures.com/en/articles/9492088-maximum-allocation"
+        ]
+      },
+      "plans": [
+        {
+          "plan_key": "standard_50k",
+          "marketing_name": "Standard Plan",
+          "account_size_label": "50K",
+          "account_size_usd": 50000,
+          "evaluation": {
+            "profit_target_usd": 3000,
+            "trailing_drawdown_usd": 2000,
+            "drawdown_type": "eod_trailing_locks_at_starting_balance",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": 0.5,
+            "consistency_rule_notes": "50% consistency on evaluation.",
+            "min_trading_days": 2,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "5 minis, 50 micros on evaluation; funded standard uses scaling plan.",
+            "activation_fee_usd": 149,
+            "other_eval_notes": "No Daily Loss Guard on Standard Evaluations."
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": 2000,
+            "funded_drawdown_type": "eod_trailing_locks_at_starting_balance",
+            "funded_daily_loss_limit_usd": 1000,
+            "payout_increment_usd": 200,
+            "min_trading_days_between_payouts": 14,
+            "max_payout_per_request_usd": 15000,
+            "profit_split_notes": "70% on payouts 1-2, 80% on payouts 3-4, 90% on payouts 5+.",
+            "funded_consistency_notes": "40% consistency on Standard Qualified accounts.",
+            "other_funded_notes": "Bi-weekly payout date. Withdrawals contribute toward MLL. Standard Qualified accounts have news-trading restrictions and a scaling plan."
+          },
+          "sources": [
+            {
+              "kind": "url",
+              "reference": "https://help.alpha-futures.com/en/articles/11632512-standard-account-overview",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.alpha-futures.com/en/articles/9491999-maximum-loss-limit-mll",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.alpha-futures.com/en/articles/9492014-daily-loss-guard",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.alpha-futures.com/en/articles/9492051-payout-policy",
+              "accessed_date": "2026-04-02"
+            }
+          ]
+        },
+        {
+          "plan_key": "standard_100k",
+          "marketing_name": "Standard Plan",
+          "account_size_label": "100K",
+          "account_size_usd": 100000,
+          "evaluation": {
+            "profit_target_usd": 6000,
+            "trailing_drawdown_usd": 4000,
+            "drawdown_type": "eod_trailing_locks_at_starting_balance",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": 0.5,
+            "consistency_rule_notes": "50% consistency on evaluation.",
+            "min_trading_days": 2,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "10 minis, 100 micros on evaluation; funded standard uses scaling plan.",
+            "activation_fee_usd": 149,
+            "other_eval_notes": "No Daily Loss Guard on Standard Evaluations."
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": 4000,
+            "funded_drawdown_type": "eod_trailing_locks_at_starting_balance",
+            "funded_daily_loss_limit_usd": 2000,
+            "payout_increment_usd": 200,
+            "min_trading_days_between_payouts": 14,
+            "max_payout_per_request_usd": 15000,
+            "profit_split_notes": "70% on payouts 1-2, 80% on payouts 3-4, 90% on payouts 5+.",
+            "funded_consistency_notes": "40% consistency on Standard Qualified accounts.",
+            "other_funded_notes": "Bi-weekly payout date. Withdrawals contribute toward MLL."
+          },
+          "sources": [
+            {
+              "kind": "url",
+              "reference": "https://help.alpha-futures.com/en/articles/11632512-standard-account-overview",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.alpha-futures.com/en/articles/9492051-payout-policy",
+              "accessed_date": "2026-04-02"
+            }
+          ]
+        },
+        {
+          "plan_key": "standard_150k",
+          "marketing_name": "Standard Plan",
+          "account_size_label": "150K",
+          "account_size_usd": 150000,
+          "evaluation": {
+            "profit_target_usd": 9000,
+            "trailing_drawdown_usd": 6000,
+            "drawdown_type": "eod_trailing_locks_at_starting_balance",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": 0.5,
+            "consistency_rule_notes": "50% consistency on evaluation.",
+            "min_trading_days": 2,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "15 minis, 150 micros on evaluation; funded standard uses scaling plan.",
+            "activation_fee_usd": 149,
+            "other_eval_notes": "No Daily Loss Guard on Standard Evaluations."
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": 6000,
+            "funded_drawdown_type": "eod_trailing_locks_at_starting_balance",
+            "funded_daily_loss_limit_usd": 3000,
+            "payout_increment_usd": 200,
+            "min_trading_days_between_payouts": 14,
+            "max_payout_per_request_usd": 15000,
+            "profit_split_notes": "70% on payouts 1-2, 80% on payouts 3-4, 90% on payouts 5+.",
+            "funded_consistency_notes": "40% consistency on Standard Qualified accounts.",
+            "other_funded_notes": "Bi-weekly payout date. Withdrawals contribute toward MLL."
+          },
+          "sources": [
+            {
+              "kind": "url",
+              "reference": "https://help.alpha-futures.com/en/articles/11632512-standard-account-overview",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.alpha-futures.com/en/articles/9492051-payout-policy",
+              "accessed_date": "2026-04-02"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tradeify",
+      "display_name": "Tradeify",
+      "website": "https://tradeify.co/",
+      "account_limits": {
+        "max_concurrent_evaluations_total": null,
+        "max_concurrent_funded_accounts_total": 5,
+        "max_funded_accounts_per_account_size": null,
+        "max_qualified_or_similar_stage_accounts": null,
+        "scaling_or_live_copies_max": 5,
+        "combine_passed_accounts_allowed": null,
+        "household_or_identity_restrictions_notes": "Funded account limit applies per household.",
+        "other_account_cap_notes": "Evaluation accounts are unlimited. You can hold up to 5 funded accounts total across Growth, Select Flex/Daily, and Lightning. Elite traders can have up to 5 live accounts.",
+        "sources": [
+          "https://help.tradeify.co/en/articles/10468251-how-many-simulated-funded-accounts-can-i-have-at-once",
+          "https://help.tradeify.co/en/articles/12969284-tradeify-elite-program"
+        ]
+      },
+      "plans": [
+        {
+          "plan_key": "pro_eval_50k",
+          "marketing_name": "Select Evaluation",
+          "account_size_label": "50K",
+          "account_size_usd": 50000,
+          "evaluation": {
+            "profit_target_usd": 3000,
+            "trailing_drawdown_usd": 2000,
+            "drawdown_type": "end_of_day_drawdown",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": 0.4,
+            "consistency_rule_notes": "40% consistency; no single day > 40% of profit.",
+            "min_trading_days": 3,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "4 mini / 40 micro maximum contracts (scaled); starts at 2 mini / 20 micro funded depending on policy/scale.",
+            "activation_fee_usd": 0,
+            "other_eval_notes": "Select evaluation has no DLL during evaluation and no activation fee."
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": 2000,
+            "funded_drawdown_type": null,
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "Select branches into Flex or Daily after passing. Both use 90/10 split.",
+            "funded_consistency_notes": "Flex funded: no consistency rule. Daily funded: policy differs and payout is based on payout-period profit with DLL/buffer rules.",
+            "other_funded_notes": "Select Flex 50K: EOD drawdown $2,000, no DLL, payout every 5 winning days, cap $3,000 per payout, no minimum balance requirement. Select Daily uses a different payout policy and should be modeled separately if you want exact funded fields.",
+            "branching_policy_note": "Because Select lets the trader choose Flex or Daily after passing, single-value funded fields are intentionally left null here."
+          },
+          "sources": [
+            {
+              "kind": "url",
+              "reference": "https://help.tradeify.co/en/articles/12853921-select-evaluation-accounts",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.tradeify.co/en/articles/12853966-select-flex-and-select-daily-payout-policies",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.tradeify.co/en/articles/10468251-how-many-simulated-funded-accounts-can-i-have-at-once",
+              "accessed_date": "2026-04-02"
+            }
+          ]
+        },
+        {
+          "plan_key": "pro_eval_150k",
+          "marketing_name": "Select Evaluation",
+          "account_size_label": "150K",
+          "account_size_usd": 150000,
+          "evaluation": {
+            "profit_target_usd": 9000,
+            "trailing_drawdown_usd": 4500,
+            "drawdown_type": "end_of_day_drawdown",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": 0.4,
+            "consistency_rule_notes": "40% consistency; no single day > 40% of profit.",
+            "min_trading_days": 3,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "12 mini / 120 micro maximum contracts (scaled); funded scaling depends on policy.",
+            "activation_fee_usd": 0,
+            "other_eval_notes": "Select evaluation has no DLL during evaluation and no activation fee."
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": 4500,
+            "funded_drawdown_type": null,
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "Select branches into Flex or Daily after passing. Both use 90/10 split.",
+            "funded_consistency_notes": "Flex funded: no consistency rule. Daily funded: policy differs and payout is based on payout-period profit with DLL/buffer rules.",
+            "other_funded_notes": "Select Flex 150K: EOD drawdown $4,500, no DLL, payout every 5 winning days, cap $5,000 per payout, no minimum balance requirement. Select Daily uses a different payout policy and should be modeled separately if you want exact funded fields.",
+            "branching_policy_note": "Because Select lets the trader choose Flex or Daily after passing, single-value funded fields are intentionally left null here."
+          },
+          "sources": [
+            {
+              "kind": "url",
+              "reference": "https://help.tradeify.co/en/articles/12853921-select-evaluation-accounts",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.tradeify.co/en/articles/12853966-select-flex-and-select-daily-payout-policies",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://help.tradeify.co/en/articles/10468251-how-many-simulated-funded-accounts-can-i-have-at-once",
+              "accessed_date": "2026-04-02"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "apex",
+      "display_name": "Apex Trader Funding",
+      "website": "https://apextraderfunding.com/",
+      "account_limits": {
+        "max_concurrent_evaluations_total": null,
+        "max_concurrent_funded_accounts_total": 20,
+        "max_funded_accounts_per_account_size": null,
+        "max_qualified_or_similar_stage_accounts": 20,
+        "scaling_or_live_copies_max": null,
+        "combine_passed_accounts_allowed": null,
+        "household_or_identity_restrictions_notes": "20 active PA accounts total across all people in the same house, companies, and connections.",
+        "other_account_cap_notes": "No limit to evaluation accounts. This cap applies across EOD, Intraday, and legacy PA accounts combined.",
+        "sources": [
+          "https://support.apextraderfunding.com/hc/en-us/articles/4406804554779-How-Many-Paid-Funded-Accounts-Am-I-Allowed-to-Have",
+          "https://support.apextraderfunding.com/hc/en-us/articles/47204516592795-EOD-Performance-Accounts-PA"
+        ]
+      },
+      "plans": [
+        {
+          "plan_key": "eval_50k",
+          "marketing_name": "EOD Evaluation",
+          "account_size_label": "50K",
+          "account_size_usd": 50000,
+          "evaluation": {
+            "profit_target_usd": 3000,
+            "trailing_drawdown_usd": 2000,
+            "drawdown_type": "end_of_day_drawdown",
+            "daily_loss_limit_usd": 1000,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "No evaluation consistency requirement on current EOD Evaluation.",
+            "min_trading_days": 0,
+            "max_trading_days": 30,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "6 max contracts during evaluation.",
+            "activation_fee_usd": null,
+            "other_eval_notes": "May pass in one trading day. 7 calendar days to activate PA after passing. One-time PA activation fee applies, but amount was not surfaced in the official pages reviewed."
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": 2000,
+            "funded_drawdown_type": "end_of_day_drawdown",
+            "funded_daily_loss_limit_usd": 1000,
+            "payout_increment_usd": 500,
+            "min_trading_days_between_payouts": 5,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "100% payout split on approved payouts.",
+            "funded_consistency_notes": "50% consistency rule applies at payout time.",
+            "other_funded_notes": "Current EOD PA uses tier-based scaling. For 50K PA: Level 1 = 2 contracts / $1,000 DLL; Level 2 = 3 contracts / $1,000 DLL; Level 3 = 4 contracts / $2,000 DLL; Level 4 = 4 contracts / $3,000 DLL. Hitting DLL pauses trading for the day; hitting EOD drawdown closes the PA.",
+            "payout_cap_note": "Official snippet reviewed confirms minimum $500 and weekly eligibility after 5 qualifying days; I did not find a clean official line for a hard max-per-request on the new EOD PA, so left it null."
+          },
+          "sources": [
+            {
+              "kind": "url",
+              "reference": "https://support.apextraderfunding.com/hc/en-us/articles/46724640813083-EOD-Evaluations",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://support.apextraderfunding.com/hc/en-us/articles/47204516592795-EOD-Performance-Accounts-PA",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://support.apextraderfunding.com/hc/en-us/articles/47257193113371-Daily-Loss-Limit-Explained",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://support.apextraderfunding.com/hc/en-us/articles/4406804554779-How-Many-Paid-Funded-Accounts-Am-I-Allowed-to-Have",
+              "accessed_date": "2026-04-02"
+            }
+          ]
+        },
+        {
+          "plan_key": "eval_150k",
+          "marketing_name": "EOD Evaluation",
+          "account_size_label": "150K",
+          "account_size_usd": 150000,
+          "evaluation": {
+            "profit_target_usd": 9000,
+            "trailing_drawdown_usd": 4000,
+            "drawdown_type": "end_of_day_drawdown",
+            "daily_loss_limit_usd": 2000,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "No evaluation consistency requirement on current EOD Evaluation.",
+            "min_trading_days": 0,
+            "max_trading_days": 30,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "12 max contracts during evaluation.",
+            "activation_fee_usd": null,
+            "other_eval_notes": "May pass in one trading day. 7 calendar days to activate PA after passing. One-time PA activation fee applies, but amount was not surfaced in the official pages reviewed."
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": 4000,
+            "funded_drawdown_type": "end_of_day_drawdown",
+            "funded_daily_loss_limit_usd": 2500,
+            "payout_increment_usd": 500,
+            "min_trading_days_between_payouts": 5,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "100% payout split on approved payouts.",
+            "funded_consistency_notes": "50% consistency rule applies at payout time.",
+            "other_funded_notes": "Current EOD PA uses tier-based scaling. For 150K PA: Level 1 = 4 contracts / $2,500 DLL; Level 2 = 5 contracts / $2,500 DLL; Level 3 = 7 contracts / $2,500 DLL; Level 4 = 10 contracts / $3,000 DLL; Level 5 = 10 contracts / $4,000 DLL.",
+            "payout_cap_note": "Official snippet reviewed confirms minimum $500 and weekly eligibility after 5 qualifying days; I did not find a clean official line for a hard max-per-request on the new EOD PA, so left it null."
+          },
+          "sources": [
+            {
+              "kind": "url",
+              "reference": "https://support.apextraderfunding.com/hc/en-us/articles/46724640813083-EOD-Evaluations",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://support.apextraderfunding.com/hc/en-us/articles/47204516592795-EOD-Performance-Accounts-PA",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://support.apextraderfunding.com/hc/en-us/articles/47257193113371-Daily-Loss-Limit-Explained",
+              "accessed_date": "2026-04-02"
+            },
+            {
+              "kind": "url",
+              "reference": "https://support.apextraderfunding.com/hc/en-us/articles/4406804554779-How-Many-Paid-Funded-Accounts-Am-I-Allowed-to-Have",
+              "accessed_date": "2026-04-02"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

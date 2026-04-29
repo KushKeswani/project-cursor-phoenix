@@ -1,0 +1,72 @@
+# ProjectX live execution — credentials: use projectx/.env (see .env.example)
+# or export PROJECTX_USERNAME, PROJECTX_API_KEY, PROJECTX_ACCOUNT_ID.
+#
+# API host must match your firm. TopstepX → api.topstepx.com (loginKey path is /api/Auth/loginKey).
+# Other ProjectX firms may use https://api.thefuturesdesk.projectx.com (see Gateway connection URLs).
+
+api:
+  base_url: "https://api.topstepx.com"
+  rtc_user_hub: "https://rtc.topstepx.com/hubs/user"
+
+credentials:
+  user_name: ""
+  api_key: ""
+
+trading:
+  account_id: null
+  live_contracts: true
+  instruments:
+    - symbol: MNQ
+      search_text: "MNQ"
+    - symbol: NQ
+      search_text: "NQ"
+    - symbol: CL
+      search_text: "CL"
+    - symbol: YM
+      # Mini Dow ($5/pt). Gateway search "YM" can return MYM first; code picks mini (excludes MYM).
+      search_text: "YM"
+    - symbol: MGC
+      search_text: "MGC"
+
+execution:
+  dry_run: true
+  # --- Phoenix entry policy (live vs backtest parity) ---
+  # With phoenix_entry_order: limit, ProjectX sends a resting **stop** at the engine trigger price.
+  # If the last bar close is already through that level, the exchange treats the buy/sell stop as
+  # invalid vs last — see entry_breakout_stop_valid in projectx/strategy/phoenix_auto.py. The engine
+  # may still model a fill at the trigger (zero-slippage touch), so live can **skip** while backtest
+  # shows a trade. Remedies: (1) accept the skip, (2) use CLI --phoenix-market-entry for immediate
+  # market on signal, or (3) align research ExecutionOptions with the same story you trade live.
+  #
+  # Phoenix --phoenix-auto: parent order type. "limit" here means **stop@trigger** (breakout stop),
+  # not a passive limit order. Use --phoenix-market-entry for immediate market.
+  # phoenix_arm_orders: place buy/sell stop brackets at long/short levels when the trade window opens
+  # (default true). Set false or use --phoenix-no-arm-orders to disable.
+  phoenix_entry_order: limit
+  phoenix_arm_orders: true
+  # Phoenix scan: "touch"|"touch_legacy" = high≥long/low≤short (research default); "touch_strict" = wick-through.
+  phoenix_entry_fill: touch
+  # When true (default), Phoenix sends Telegram if PROJECTX_TELEGRAM_* env vars are set.
+  # Set false to disable Telegram for Phoenix without using --phoenix-no-telegram.
+  phoenix_telegram: true
+
+risk:
+  max_daily_loss_usd: 500
+  max_drawdown_from_peak_usd: 1500
+  max_position_contracts: 10
+  max_trades_per_day: 10
+  max_consecutive_losses: 3
+  ny_session:
+    enabled: true
+    start: "09:30"
+    end: "16:00"
+  emergency_halt: false
+  kill_switch_path: null
+
+logging:
+  level: INFO
+  file: "projectx/logs/projectx.log"
+
+auth:
+  refresh_margin_seconds: 1800
+  request_timeout_seconds: 30

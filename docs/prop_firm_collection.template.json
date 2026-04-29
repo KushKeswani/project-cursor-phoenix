@@ -1,0 +1,513 @@
+{
+  "collection_meta": {
+    "schema_version": "1.1",
+    "last_updated": "",
+    "verified_against_live_rules": false,
+    "collector_notes": "Per plan: fill max_contracts_note with firm wording (minis/micros, combine rules). Firm-level account_limits: copy exact caps from rules / support. Optional evaluation keys: pricing_reference_notes. Optional funded keys: payout_minimum_notes, payout_cycle_reset_notes, branching_policy_note, payout_cap_note. account_limits.sources may be URL strings or objects {kind, reference, accessed_date}. Completed example: prop_firm_collection.filled.json."
+  },
+  "firms": [
+    {
+      "id": "topstep",
+      "display_name": "Topstep",
+      "website": "",
+      "account_limits": {
+        "max_concurrent_evaluations_total": null,
+        "max_concurrent_funded_accounts_total": null,
+        "max_funded_accounts_per_account_size": null,
+        "max_qualified_or_similar_stage_accounts": null,
+        "scaling_or_live_copies_max": null,
+        "combine_passed_accounts_allowed": null,
+        "household_or_identity_restrictions_notes": "",
+        "other_account_cap_notes": "",
+        "sources": []
+      },
+      "plans": [
+        {
+          "plan_key": "combine_50k",
+          "marketing_name": "",
+          "account_size_label": "50K",
+          "account_size_usd": 50000,
+          "evaluation": {
+            "profit_target_usd": null,
+            "trailing_drawdown_usd": null,
+            "drawdown_type": "",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "",
+            "min_trading_days": null,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "",
+            "activation_fee_usd": null,
+            "other_eval_notes": "",
+            "pricing_reference_notes": ""
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": null,
+            "funded_drawdown_type": "",
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "",
+            "funded_consistency_notes": "",
+            "other_funded_notes": "",
+            "payout_minimum_notes": "",
+            "payout_cycle_reset_notes": "",
+            "branching_policy_note": "",
+            "payout_cap_note": ""
+          },
+          "sources": [
+            {
+              "kind": "url|screenshot|support_chat|pdf",
+              "reference": "",
+              "accessed_date": ""
+            }
+          ]
+        },
+        {
+          "plan_key": "combine_150k",
+          "marketing_name": "",
+          "account_size_label": "150K",
+          "account_size_usd": 150000,
+          "evaluation": {
+            "profit_target_usd": null,
+            "trailing_drawdown_usd": null,
+            "drawdown_type": "",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "",
+            "min_trading_days": null,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "",
+            "activation_fee_usd": null,
+            "other_eval_notes": "",
+            "pricing_reference_notes": ""
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": null,
+            "funded_drawdown_type": "",
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "",
+            "funded_consistency_notes": "",
+            "other_funded_notes": "",
+            "payout_minimum_notes": "",
+            "payout_cycle_reset_notes": "",
+            "branching_policy_note": "",
+            "payout_cap_note": ""
+          },
+          "sources": []
+        }
+      ]
+    },
+    {
+      "id": "lucid",
+      "display_name": "Lucid Trading",
+      "website": "",
+      "account_limits": {
+        "max_concurrent_evaluations_total": null,
+        "max_concurrent_funded_accounts_total": null,
+        "max_funded_accounts_per_account_size": null,
+        "max_qualified_or_similar_stage_accounts": null,
+        "scaling_or_live_copies_max": null,
+        "combine_passed_accounts_allowed": null,
+        "household_or_identity_restrictions_notes": "",
+        "other_account_cap_notes": "",
+        "sources": []
+      },
+      "plans": [
+        {
+          "plan_key": "select_50k_eval",
+          "marketing_name": "",
+          "account_size_label": "50K",
+          "account_size_usd": 50000,
+          "evaluation": {
+            "profit_target_usd": null,
+            "trailing_drawdown_usd": null,
+            "drawdown_type": "",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "",
+            "min_trading_days": null,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "",
+            "activation_fee_usd": null,
+            "other_eval_notes": "",
+            "pricing_reference_notes": ""
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": null,
+            "funded_drawdown_type": "",
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "",
+            "funded_consistency_notes": "",
+            "other_funded_notes": "",
+            "payout_minimum_notes": "",
+            "payout_cycle_reset_notes": "",
+            "branching_policy_note": "",
+            "payout_cap_note": ""
+          },
+          "sources": []
+        },
+        {
+          "plan_key": "select_150k_eval",
+          "marketing_name": "",
+          "account_size_label": "150K",
+          "account_size_usd": 150000,
+          "evaluation": {
+            "profit_target_usd": null,
+            "trailing_drawdown_usd": null,
+            "drawdown_type": "",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "",
+            "min_trading_days": null,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "",
+            "activation_fee_usd": null,
+            "other_eval_notes": "",
+            "pricing_reference_notes": ""
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": null,
+            "funded_drawdown_type": "",
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "",
+            "funded_consistency_notes": "",
+            "other_funded_notes": "",
+            "payout_minimum_notes": "",
+            "payout_cycle_reset_notes": "",
+            "branching_policy_note": "",
+            "payout_cap_note": ""
+          },
+          "sources": []
+        }
+      ]
+    },
+    {
+      "id": "alpha_futures",
+      "display_name": "Alpha Futures",
+      "website": "",
+      "account_limits": {
+        "max_concurrent_evaluations_total": null,
+        "max_concurrent_funded_accounts_total": null,
+        "max_funded_accounts_per_account_size": null,
+        "max_qualified_or_similar_stage_accounts": null,
+        "scaling_or_live_copies_max": null,
+        "combine_passed_accounts_allowed": null,
+        "household_or_identity_restrictions_notes": "",
+        "other_account_cap_notes": "Internal research row cited max 3 qualified accounts — verify on live rules.",
+        "sources": []
+      },
+      "plans": [
+        {
+          "plan_key": "standard_50k",
+          "marketing_name": "Standard Plan",
+          "account_size_label": "50K",
+          "account_size_usd": 50000,
+          "evaluation": {
+            "profit_target_usd": null,
+            "trailing_drawdown_usd": null,
+            "drawdown_type": "",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "",
+            "min_trading_days": null,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "",
+            "activation_fee_usd": null,
+            "other_eval_notes": "",
+            "pricing_reference_notes": ""
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": null,
+            "funded_drawdown_type": "",
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "",
+            "funded_consistency_notes": "",
+            "other_funded_notes": "",
+            "payout_minimum_notes": "",
+            "payout_cycle_reset_notes": "",
+            "branching_policy_note": "",
+            "payout_cap_note": ""
+          },
+          "sources": []
+        },
+        {
+          "plan_key": "standard_100k",
+          "marketing_name": "Standard Plan",
+          "account_size_label": "100K",
+          "account_size_usd": 100000,
+          "evaluation": {
+            "profit_target_usd": null,
+            "trailing_drawdown_usd": null,
+            "drawdown_type": "",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "",
+            "min_trading_days": null,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "",
+            "activation_fee_usd": null,
+            "other_eval_notes": "",
+            "pricing_reference_notes": ""
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": null,
+            "funded_drawdown_type": "",
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "",
+            "funded_consistency_notes": "",
+            "other_funded_notes": "",
+            "payout_minimum_notes": "",
+            "payout_cycle_reset_notes": "",
+            "branching_policy_note": "",
+            "payout_cap_note": ""
+          },
+          "sources": []
+        },
+        {
+          "plan_key": "standard_150k",
+          "marketing_name": "Standard Plan",
+          "account_size_label": "150K",
+          "account_size_usd": 150000,
+          "evaluation": {
+            "profit_target_usd": null,
+            "trailing_drawdown_usd": null,
+            "drawdown_type": "",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "",
+            "min_trading_days": null,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "",
+            "activation_fee_usd": null,
+            "other_eval_notes": "",
+            "pricing_reference_notes": ""
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": null,
+            "funded_drawdown_type": "",
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "",
+            "funded_consistency_notes": "",
+            "other_funded_notes": "",
+            "payout_minimum_notes": "",
+            "payout_cycle_reset_notes": "",
+            "branching_policy_note": "",
+            "payout_cap_note": ""
+          },
+          "sources": []
+        }
+      ]
+    },
+    {
+      "id": "tradeify",
+      "display_name": "Tradeify",
+      "website": "",
+      "account_limits": {
+        "max_concurrent_evaluations_total": null,
+        "max_concurrent_funded_accounts_total": null,
+        "max_funded_accounts_per_account_size": null,
+        "max_qualified_or_similar_stage_accounts": null,
+        "scaling_or_live_copies_max": null,
+        "combine_passed_accounts_allowed": null,
+        "household_or_identity_restrictions_notes": "",
+        "other_account_cap_notes": "",
+        "sources": []
+      },
+      "plans": [
+        {
+          "plan_key": "pro_eval_50k",
+          "marketing_name": "",
+          "account_size_label": "50K",
+          "account_size_usd": 50000,
+          "evaluation": {
+            "profit_target_usd": null,
+            "trailing_drawdown_usd": null,
+            "drawdown_type": "",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "",
+            "min_trading_days": null,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "",
+            "activation_fee_usd": null,
+            "other_eval_notes": "",
+            "pricing_reference_notes": ""
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": null,
+            "funded_drawdown_type": "",
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "",
+            "funded_consistency_notes": "",
+            "other_funded_notes": "",
+            "payout_minimum_notes": "",
+            "payout_cycle_reset_notes": "",
+            "branching_policy_note": "",
+            "payout_cap_note": ""
+          },
+          "sources": []
+        },
+        {
+          "plan_key": "pro_eval_150k",
+          "marketing_name": "",
+          "account_size_label": "150K",
+          "account_size_usd": 150000,
+          "evaluation": {
+            "profit_target_usd": null,
+            "trailing_drawdown_usd": null,
+            "drawdown_type": "",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "",
+            "min_trading_days": null,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "",
+            "activation_fee_usd": null,
+            "other_eval_notes": "",
+            "pricing_reference_notes": ""
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": null,
+            "funded_drawdown_type": "",
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "",
+            "funded_consistency_notes": "",
+            "other_funded_notes": "",
+            "payout_minimum_notes": "",
+            "payout_cycle_reset_notes": "",
+            "branching_policy_note": "",
+            "payout_cap_note": ""
+          },
+          "sources": []
+        }
+      ]
+    },
+    {
+      "id": "apex",
+      "display_name": "Apex Trader Funding",
+      "website": "",
+      "account_limits": {
+        "max_concurrent_evaluations_total": null,
+        "max_concurrent_funded_accounts_total": null,
+        "max_funded_accounts_per_account_size": null,
+        "max_qualified_or_similar_stage_accounts": null,
+        "scaling_or_live_copies_max": null,
+        "combine_passed_accounts_allowed": null,
+        "household_or_identity_restrictions_notes": "",
+        "other_account_cap_notes": "",
+        "sources": []
+      },
+      "plans": [
+        {
+          "plan_key": "eval_50k",
+          "marketing_name": "",
+          "account_size_label": "50K",
+          "account_size_usd": 50000,
+          "evaluation": {
+            "profit_target_usd": null,
+            "trailing_drawdown_usd": null,
+            "drawdown_type": "",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "",
+            "min_trading_days": null,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "",
+            "activation_fee_usd": null,
+            "other_eval_notes": "",
+            "pricing_reference_notes": ""
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": null,
+            "funded_drawdown_type": "",
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "",
+            "funded_consistency_notes": "",
+            "other_funded_notes": "",
+            "payout_minimum_notes": "",
+            "payout_cycle_reset_notes": "",
+            "branching_policy_note": "",
+            "payout_cap_note": ""
+          },
+          "sources": []
+        },
+        {
+          "plan_key": "eval_150k",
+          "marketing_name": "",
+          "account_size_label": "150K",
+          "account_size_usd": 150000,
+          "evaluation": {
+            "profit_target_usd": null,
+            "trailing_drawdown_usd": null,
+            "drawdown_type": "",
+            "daily_loss_limit_usd": null,
+            "consistency_max_best_day_fraction": null,
+            "consistency_rule_notes": "",
+            "min_trading_days": null,
+            "max_trading_days": null,
+            "eval_window_days_for_sim": 60,
+            "max_contracts_note": "",
+            "activation_fee_usd": null,
+            "other_eval_notes": "",
+            "pricing_reference_notes": ""
+          },
+          "funded": {
+            "max_or_trailing_drawdown_usd": null,
+            "funded_drawdown_type": "",
+            "funded_daily_loss_limit_usd": null,
+            "payout_increment_usd": null,
+            "min_trading_days_between_payouts": null,
+            "max_payout_per_request_usd": null,
+            "profit_split_notes": "",
+            "funded_consistency_notes": "",
+            "other_funded_notes": "",
+            "payout_minimum_notes": "",
+            "payout_cycle_reset_notes": "",
+            "branching_policy_note": "",
+            "payout_cap_note": ""
+          },
+          "sources": []
+        }
+      ]
+    }
+  ]
+}

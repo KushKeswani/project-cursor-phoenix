@@ -1,0 +1,11 @@
+{
+  "symbol": "MNQ",
+  "side": "long",
+  "size": 2,
+  "risk_usd": 200,
+  "reward_usd": 400,
+  "sim_contract_search": true,
+  "ignore_ny_session": true,
+  "signal_id": "mnq-2026-03-30-1",
+  "custom_tag": "replace-with-unique-tag-each-time"
+}

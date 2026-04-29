@@ -1,0 +1,12 @@
+{
+  "symbol": "MNQ",
+  "side": "long",
+  "size": 1,
+  "reference_price": 21000.0,
+  "stop_loss": 20980.0,
+  "take_profit": 21040.0,
+  "sim_contract_search": true,
+  "ignore_ny_session": true,
+  "signal_id": "mnq-price-1",
+  "custom_tag": "replace-with-unique-tag-each-time"
+}

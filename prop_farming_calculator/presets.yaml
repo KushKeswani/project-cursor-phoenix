@@ -1,0 +1,87 @@
+# Parameter bundles aligned with scripts/configs/prop_firm_rules_phoenix.yaml
+# and Topstep-style funded research defaults (min $150 day, 5 qual days, 50% withdraw).
+presets:
+  custom:
+    label: Custom (use sidebar values)
+    audition_profit_target_usd: 3000
+    audition_trailing_drawdown_usd: 2000
+    audition_eval_days: 60
+    audition_daily_loss_limit_usd: null
+    audition_consistency_max_best_day_fraction: null
+    funded_starting_balance_usd: 50000
+    funded_trail_on_profit_usd: 2000
+    funded_profit_target_usd: 4000
+    funded_payout_amount_usd: 2000
+    challenge_fee_usd: 91
+    activation_fee_usd: 0
+    min_profit_per_day_usd: 150
+    n_qualifying_days: 5
+    withdraw_fraction: 0.5
+
+  phoenix_topstep_50k:
+    label: Phoenix Topstep-style 50K eval + 50K funded
+    audition_profit_target_usd: 3000
+    audition_trailing_drawdown_usd: 2000
+    audition_eval_days: 60
+    audition_daily_loss_limit_usd: null
+    audition_consistency_max_best_day_fraction: null
+    funded_starting_balance_usd: 50000
+    funded_trail_on_profit_usd: 2000
+    funded_profit_target_usd: 4000
+    funded_payout_amount_usd: 2000
+    challenge_fee_usd: 91
+    activation_fee_usd: 0
+    min_profit_per_day_usd: 150
+    n_qualifying_days: 5
+    withdraw_fraction: 0.5
+
+  phoenix_lucid_50k:
+    label: Phoenix Lucid-style 50K (40% consistency on eval)
+    audition_profit_target_usd: 3000
+    audition_trailing_drawdown_usd: 2000
+    audition_eval_days: 60
+    audition_daily_loss_limit_usd: null
+    audition_consistency_max_best_day_fraction: 0.40
+    funded_starting_balance_usd: 50000
+    funded_trail_on_profit_usd: 2000
+    funded_profit_target_usd: 4000
+    funded_payout_amount_usd: 2000
+    challenge_fee_usd: 91
+    activation_fee_usd: 0
+    min_profit_per_day_usd: 150
+    n_qualifying_days: 5
+    withdraw_fraction: 0.5
+
+  phoenix_topstep_150k:
+    label: Phoenix Topstep-style 150K eval + 150K funded
+    audition_profit_target_usd: 9000
+    audition_trailing_drawdown_usd: 4500
+    audition_eval_days: 60
+    audition_daily_loss_limit_usd: null
+    audition_consistency_max_best_day_fraction: null
+    funded_starting_balance_usd: 150000
+    funded_trail_on_profit_usd: 4500
+    funded_profit_target_usd: 12000
+    funded_payout_amount_usd: 6000
+    challenge_fee_usd: 149
+    activation_fee_usd: 0
+    min_profit_per_day_usd: 150
+    n_qualifying_days: 5
+    withdraw_fraction: 0.5
+
+  phoenix_lucid_150k:
+    label: Phoenix Lucid-style 150K (40% consistency on eval)
+    audition_profit_target_usd: 9000
+    audition_trailing_drawdown_usd: 4500
+    audition_eval_days: 60
+    audition_daily_loss_limit_usd: null
+    audition_consistency_max_best_day_fraction: 0.40
+    funded_starting_balance_usd: 150000
+    funded_trail_on_profit_usd: 4500
+    funded_profit_target_usd: 12000
+    funded_payout_amount_usd: 6000
+    challenge_fee_usd: 149
+    activation_fee_usd: 0
+    min_profit_per_day_usd: 150
+    n_qualifying_days: 5
+    withdraw_fraction: 0.5
