@@ -2,6 +2,8 @@
 
 Portable slice of **Agent Phoenix**: futures range-breakout research (**Python backtest**), **live-pace replay** (same scan path as ProjectX), **ProjectX / Gateway live runner**, and **NinjaTrader 8** strategy sources. Use this folder as a **standalone workspace** (no parent repo required) for humans or **AI assistants** changing strategy code, data plumbing, or live wiring.
 
+**Public GitHub (clone on your Windows VPS):** [github.com/KushKeswani/project-cursor-phoenix](https://github.com/KushKeswani/project-cursor-phoenix).
+
 **Agent onboarding:** read **`CONTEXT_FOR_AGENT.md`** first, then **`goals.md`**.
 
 ## Autonomous AI: run until the work is actually finished
