@@ -40,13 +40,13 @@ If you use an **LLM or coding agent** (e.g. Cursor) on this repo, the intended d
 
 3. Use **`py scripts\...`** or **`python scripts\...`** from the repo root the same way as the Unix examples in this file (`Data-DataBento` layout is unchanged—see **`docs/DATABENTO_KNOWLEDGE.md`**).
 
-4. **Git LFS:** Historical bars under **`Data-DataBento/`** and **`Data-ProjectX/`** are stored with [**Git LFS**](https://git-lfs.github.com/). Install Git for Windows (includes `git`), then in an elevated or normal shell run **`git lfs install`** once. After **`git clone`**, run **`git lfs pull`** in the repo root so parquet/CSV downloads completely.
+4. **Git LFS:** Historical bars under **`Data-DataBento/`** are stored with [**Git LFS**](https://git-lfs.github.com/). Install Git for Windows (includes `git`), then in an elevated or normal shell run **`git lfs install`** once. After **`git clone`**, run **`git lfs pull`** in the repo root so parquet downloads completely.
 
 ## What this repo tracks (full tree)
 
 This fork is configured **without a `.gitignore`**: generated outputs, local data, and **`.env`** can all be committed so the VPS matches your machine.
 
-- **Git LFS:** Paths matching **`Data-DataBento/**`** and **`Data-ProjectX/**`** use LFS (see **`.gitattributes`**) because GitHub rejects single files **> 100 MB** in plain Git. Everything is still “in the repo”; clones must run **`git lfs pull`**.
+- **Git LFS:** Paths under **`Data-DataBento/**`** use LFS (see **`.gitattributes`**) because GitHub rejects single files **> 100 MB** in plain Git. Everything is still “in the repo”; clones must run **`git lfs pull`**.
 
 - **Secrets:** If **`.env`** was ever pushed to a **public** GitHub repo, treat those keys as **burned**—revoke Telegram bot tokens, ProjectX/Gateway credentials, etc., generate new ones, and update **`.env`** on each machine. Prefer **private** repos if you insist on committing secrets.
 
