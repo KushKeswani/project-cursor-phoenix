@@ -605,6 +605,19 @@ def run_horizon_batch(
         cnt = float(fc.get(k, 0))
         out_funnel[f"funnel_pct__{k}"] = 100.0 * cnt / n_f
 
+    def _ci95(values: list[float]) -> tuple[float, float]:
+        if not values:
+            return float("nan"), float("nan")
+        arr = np.asarray(values, dtype=float)
+        return float(np.percentile(arr, 2.5)), float(np.percentile(arr, 97.5))
+
+    pass_ci_lo, pass_ci_hi = _ci95([100.0 if p else 0.0 for p in passed_flags])
+    net_ci_lo, net_ci_hi = _ci95(nets)
+    roi_ci_lo, roi_ci_hi = _ci95(rois)
+    pos_roi_ci_lo, pos_roi_ci_hi = _ci95([100.0 if x > 0 else 0.0 for x in nets])
+    dpass_ci_lo, dpass_ci_hi = _ci95(eval_days_on_pass)
+    dfirst_ci_lo, dfirst_ci_hi = _ci95(days_first_pay)
+
     return {
         "horizon_trading_days": float(horizon_days),
         "eval_starts_scaled": float(starts),
@@ -616,6 +629,14 @@ def run_horizon_batch(
         "avg_net_profit_per_trader": mean_net,
         "avg_roi_pct": _mean(rois),
         "pct_positive_roi": 100.0 * pos_roi / farm.n_sims if farm.n_sims else 0.0,
+        "audition_pass_pct_ci95_low": pass_ci_lo,
+        "audition_pass_pct_ci95_high": pass_ci_hi,
+        "avg_net_profit_per_trader_ci95_low": net_ci_lo,
+        "avg_net_profit_per_trader_ci95_high": net_ci_hi,
+        "avg_roi_pct_ci95_low": roi_ci_lo,
+        "avg_roi_pct_ci95_high": roi_ci_hi,
+        "pct_positive_roi_ci95_low": pos_roi_ci_lo,
+        "pct_positive_roi_ci95_high": pos_roi_ci_hi,
         "farm_est_total_fees": mean_firm_fees * scale,
         "farm_est_net": mean_net * scale,
         "avg_monthly_payout_usd": float(avg_monthly_payout_usd),
@@ -625,6 +646,10 @@ def run_horizon_batch(
         "pct_simulations_with_any_payout": float(pct_sims_with_payout),
         "mean_eval_days_used_single_lifecycle": float(mean_eval_days_used),
         "mean_days_to_pass_eval_conditional_mc": float(mean_days_to_pass_conditional),
+        "mean_days_to_pass_eval_conditional_mc_ci95_low": dpass_ci_lo,
+        "mean_days_to_pass_eval_conditional_mc_ci95_high": dpass_ci_hi,
+        "mean_days_to_first_payout_trading_ci95_low": dfirst_ci_lo,
+        "mean_days_to_first_payout_trading_ci95_high": dfirst_ci_hi,
         **out_funnel,
     }
 

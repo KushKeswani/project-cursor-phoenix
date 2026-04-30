@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -41,6 +43,7 @@ from configs.portfolio_presets import PORTFOLIO_PRESETS, PRESET_DISPLAY_TITLES, 
 from configs.strategy_configs import get_config
 from configs.tick_config import TICK_SIZES
 from engine.fast_engine import run_backtest
+from evidence_utils import build_data_manifest, git_provenance, runtime_provenance
 from strategy_analytics.risk_drawdown import compute_risk_metrics
 
 
@@ -502,6 +505,53 @@ def main() -> int:
     print(f"Saved: {report_md}")
     print(f"Saved: {equity_chart}")
     print(f"Saved: {monthly_chart}")
+
+    data_files: list[Path] = []
+    for inst in INSTRUMENTS:
+        p = data_dir / f"{inst}.parquet"
+        if p.exists():
+            data_files.append(p)
+    data_manifest = build_data_manifest(data_files)
+    (reports_dir / f"{slug}_data_manifest.json").write_text(
+        json.dumps(
+            {
+                "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+                "profile": profile_name,
+                "full_window": {"start": args.full_start, "end": args.full_end},
+                "oos_window": {"start": args.oos_start, "end": args.oos_end},
+                "data_dir": str(data_dir),
+                **data_manifest,
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    run_meta = {
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "script": "scripts/run_portfolio_preset.py",
+        "profile": profile_name,
+        "display_title": display_title,
+        "args": vars(args),
+        "contracts": contracts,
+        "report_paths": {
+            "summary_csv": str(combined_csv),
+            "instrument_csv": str(instrument_csv),
+            "markdown_report": str(report_md),
+            "equity_chart": str(equity_chart),
+            "monthly_chart": str(monthly_chart),
+            "data_manifest": str(reports_dir / f"{slug}_data_manifest.json"),
+        },
+        "provenance": {
+            **git_provenance(REPO_ROOT),
+            **runtime_provenance(),
+        },
+    }
+    (reports_dir / f"{slug}_run_meta.json").write_text(
+        json.dumps(run_meta, indent=2, default=str),
+        encoding="utf-8",
+    )
+    print(f"Saved: {reports_dir / f'{slug}_run_meta.json'}")
+    print(f"Saved: {reports_dir / f'{slug}_data_manifest.json'}")
     return 0
 
 

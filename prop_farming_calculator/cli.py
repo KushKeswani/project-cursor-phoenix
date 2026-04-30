@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 from datetime import datetime
@@ -20,6 +21,7 @@ ensure_scripts_on_path()
 import yaml
 
 from configs.portfolio_presets import FOUR_TIER_PROFILES
+from evidence_utils import build_data_manifest, git_provenance, runtime_provenance
 from data_loader import build_daily_monthly, load_executions_from_dir
 from reporting import write_reports
 from simulation import (
@@ -43,6 +45,13 @@ PORTFOLIO_TIERS: dict[str, str] = {
     # backward compatible aliases
     "50k-low": "50k_low",
     "150k-low": "150k_low",
+}
+
+TIER_PRESET_HINT: dict[str, tuple[str, ...]] = {
+    "50k-survival": ("50k",),
+    "50k-high": ("50k",),
+    "150k-survival": ("150k",),
+    "150k-high": ("150k",),
 }
 
 # Interactive menu (number → portfolio CLI value)
@@ -109,7 +118,17 @@ def _parse_args() -> argparse.Namespace:
         help="Merge rules from presets.yaml (use 'none' to skip YAML and use defaults + CLI flags only).",
     )
     p.add_argument("--presets-file", type=Path, default=PRESETS_PATH)
+    p.add_argument(
+        "--allow-preset-mismatch",
+        action="store_true",
+        help="Allow --portfolio tier and --firm-preset key family mismatch.",
+    )
     p.add_argument("--trade-mult", type=float, default=1.0)
+    p.add_argument(
+        "--strict-required-instruments",
+        action="store_true",
+        help="Fail if any instrument with non-zero preset contracts has missing execution CSV.",
+    )
     p.add_argument("--n-sims", type=int, default=1500)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--accounts", type=int, default=1)
@@ -522,6 +541,8 @@ def run_interactive_wizard() -> argparse.Namespace:
         express_first_full_usd=express_first,
         express_split=express_split,
         funded_profit_target_note=funded_profit_target_note,
+        strict_required_instruments=False,
+        allow_preset_mismatch=False,
         interactive=False,
     )
 
@@ -531,6 +552,16 @@ def run_from_args(args: argparse.Namespace) -> int:
     raw_yaml = yaml.safe_load(presets_path.read_text(encoding="utf-8"))
     presets = raw_yaml.get("presets", {})
     pc = _build_pc(args, presets)
+    fp_for_check = (args.firm_preset or "").strip().lower()
+    if fp_for_check not in ("", "none", "-") and not args.allow_preset_mismatch:
+        hints = TIER_PRESET_HINT.get(args.portfolio, ())
+        if hints and not any(h in fp_for_check for h in hints):
+            print(
+                f"Preset mismatch: portfolio tier '{args.portfolio}' and preset key "
+                f"'{args.firm_preset}' do not appear aligned. Use --allow-preset-mismatch to override.",
+                file=sys.stderr,
+            )
+            return 2
 
     tier_key = PORTFOLIO_TIERS[args.portfolio]
     portfolio_key = FOUR_TIER_PROFILES[tier_key]
@@ -585,7 +616,16 @@ def run_from_args(args: argparse.Namespace) -> int:
 
     exec_dir = args.execution_reports_dir.expanduser().resolve()
     raw = load_executions_from_dir(exec_dir, args.scope)
-    daily, monthly, warns = build_daily_monthly(raw, portfolio_key, args.trade_mult)
+    daily, monthly, warns = build_daily_monthly(
+        raw,
+        portfolio_key,
+        args.trade_mult,
+        strict_required_instruments=bool(args.strict_required_instruments),
+    )
+    if any(w.startswith("ERROR:") for w in warns):
+        for w in warns:
+            print(w, file=sys.stderr)
+        return 2
 
     if daily.empty:
         print("Daily PnL pool is empty. Check execution CSVs and path.", file=sys.stderr)
@@ -627,6 +667,14 @@ def run_from_args(args: argparse.Namespace) -> int:
         stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         firm_slug = _safe_firm_dir(args.firm_name)
         out_dir = (_CALC / "output" / firm_slug / f"run_{stamp}").resolve()
+
+    input_csvs: list[Path] = []
+    inst_dir = exec_dir / "trade_executions" / args.scope / "instruments"
+    for inst in ("CL", "MGC", "MNQ", "YM"):
+        p = inst_dir / f"{inst}_trade_executions.csv"
+        if p.exists():
+            input_csvs.append(p)
+    data_manifest = build_data_manifest(input_csvs)
 
     horizon_results: list[dict] = []
     for _key, h_label, h_days in HORIZONS:
@@ -701,6 +749,11 @@ def run_from_args(args: argparse.Namespace) -> int:
             "seed": args.cohort_seed,
         },
         "output_dir": str(out_dir),
+        "input_data_manifest": data_manifest,
+        "provenance": {
+            **git_provenance(REPO_ROOT),
+            **runtime_provenance(),
+        },
     }
 
     daily_summary = {
@@ -726,6 +779,10 @@ def run_from_args(args: argparse.Namespace) -> int:
     print(f"Firm: {args.firm_name}")
     print(f"Wrote reports to: {out_dir}")
     print(f"  {out_dir / 'SUMMARY.md'}")
+    (out_dir / "data_manifest.json").write_text(
+        json.dumps(data_manifest, indent=2),
+        encoding="utf-8",
+    )
 
     hz_pick = next((b for b in horizon_results if b.get("horizon_label") == "6 Months"), None)
     if hz_pick is None and horizon_results:

@@ -182,6 +182,7 @@ Set **explicit numeric gates** for each release candidate (example placeholdersâ
 - Revisit this file **after major logic changes**, **preset changes**, or **new prop evaluations**.
 - When targets move (e.g. $25k/month hypothesis), update **Section 4** with the evidence window and methodology.
 - When prop farming thresholds are ratcheted, update **Section 5** tasks and any numeric gates in **Section 3**.
+- Before publishing headline metrics, run the evidence gates and rubric from `reports/EVIDENCE_QUALITY_RUBRIC.md` in the parent workspace.
 
 ---
 

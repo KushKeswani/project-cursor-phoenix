@@ -1,4 +1,38 @@
+# ── Secrets / env ──
+.env
+.env.local
+
+# ── Python ──
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.venv/
+venv/
+
+# ── Logs ──
+*.log
 projectx/logs/*.log
+
+# ── Market data (parquet/CSVs local only; VPS keeps full tree). README stays in repo. ──
+Data-DataBento/*
+!Data-DataBento/README.md
+DATA/
+
+# ── Generated reports: execution exports, replay outputs, large prop-sim trees ──
+# Top-level *.md under reports/ stays tracked; small YAML/JSON under config_snapshots/ stays tracked.
+reports/trade_executions/
+reports/live_replay_by_profile/
+reports/prop_sim_compare/backtest/
+reports/prop_sim_compare/live_replay/
+reports/prop_sim_compare/runs/
+reports/prop_farming_*/
+reports/prop_farming/
+reports/true_oos_*/
+reports/window_*/
+reports/vps_parity*.csv
+reports/visuals/
+reports/*.csv
+
+# ── Local Phoenix state ──
+projectx/strategy/state/*.json
+projectx/orders_export*.csv

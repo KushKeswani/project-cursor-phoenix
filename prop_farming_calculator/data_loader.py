@@ -41,6 +41,8 @@ def build_daily_monthly(
     raw_by_inst: dict[str, pd.DataFrame],
     portfolio_preset: str,
     trade_size_multiplier: float,
+    *,
+    strict_required_instruments: bool = False,
 ) -> tuple[pd.Series, pd.Series, list[str]]:
     """
     Scale trades by ``PORTFOLIO_PRESETS`` contracts, merge, aggregate to daily/monthly.
@@ -50,13 +52,16 @@ def build_daily_monthly(
     if portfolio_preset not in PORTFOLIO_PRESETS:
         raise ValueError(f"Unknown portfolio preset '{portfolio_preset}'")
 
+    contracts = {i: int(PORTFOLIO_PRESETS[portfolio_preset][i]) for i in INSTRUMENTS}
     missing = [i for i in INSTRUMENTS if raw_by_inst.get(i) is None or raw_by_inst[i].empty]
+    missing_required = [i for i in missing if contracts.get(i, 0) > 0]
     if len(missing) == len(INSTRUMENTS):
         warnings.append("No instrument CSVs found — daily pool is empty.")
     elif missing:
         warnings.append(f"No CSV (skipped): {', '.join(missing)}")
+    if strict_required_instruments and missing_required:
+        warnings.append(f"ERROR: missing required instrument CSVs: {', '.join(missing_required)}")
 
-    contracts = {i: int(PORTFOLIO_PRESETS[portfolio_preset][i]) for i in INSTRUMENTS}
     merged = merged_scaled_trades(raw_by_inst, contracts)
     if merged.empty:
         return pd.Series(dtype=float), pd.Series(dtype=float), warnings

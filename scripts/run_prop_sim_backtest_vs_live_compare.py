@@ -401,6 +401,80 @@ def write_comparison_md(base: Path, cohort_horizon: str) -> None:
     out_md.write_text("\n".join(lines), encoding="utf-8")
 
 
+def write_quality_gate_report(
+    base: Path,
+    *,
+    max_pool_days_ratio: float,
+    min_rolling_pass_windows: int,
+    allow_nonparity: bool,
+) -> None:
+    runs_dir = base / "runs"
+    failures: list[str] = []
+    checks: list[dict[str, object]] = []
+    for preset_key, _, _ in PRESET_RUNS:
+        slug = _preset_slug(preset_key)
+        back = runs_dir / f"backtest_{slug}"
+        live = runs_dir / f"live_replay_{slug}"
+        if not back.is_dir() or not live.is_dir():
+            continue
+        rb = _read_compare_row(back, cohort_horizon="6 Months")
+        rl = _read_compare_row(live, cohort_horizon="6 Months")
+        try:
+            b_days = int(rb.get("n_days") or 0)
+            l_days = int(rl.get("n_days") or 0)
+        except Exception:
+            b_days, l_days = 0, 0
+        ratio = float(b_days / l_days) if l_days > 0 else float("inf")
+        ok_ratio = ratio <= float(max_pool_days_ratio)
+        if not ok_ratio:
+            msg = (
+                f"{preset_key}: pool-day ratio backtest/live={ratio:.2f} "
+                f"exceeds max {max_pool_days_ratio:.2f}"
+            )
+            failures.append(msg)
+        checks.append(
+            {
+                "preset": preset_key,
+                "backtest_pool_days": b_days,
+                "live_pool_days": l_days,
+                "pool_days_ratio_backtest_over_live": ratio,
+                "pool_ratio_pass": ok_ratio,
+            }
+        )
+        for tag, run_dir in (("backtest", back), ("live_replay", live)):
+            pool = run_dir / "pool_diagnostics.csv"
+            windows = 0
+            if pool.exists():
+                ps = pd.read_csv(pool, header=None)
+                if len(ps.columns) >= 2:
+                    m = dict(zip(ps.iloc[:, 0].astype(str), ps.iloc[:, 1].astype(float)))
+                    windows = int(m.get("roll_rolling_windows", 0.0))
+            ok_windows = windows >= int(min_rolling_pass_windows)
+            if not ok_windows:
+                failures.append(
+                    f"{preset_key} ({tag}): rolling windows {windows} < min {min_rolling_pass_windows}"
+                )
+            checks.append(
+                {
+                    "preset": preset_key,
+                    "source": tag,
+                    "rolling_windows": windows,
+                    "rolling_windows_pass": ok_windows,
+                }
+            )
+    payload = {
+        "max_pool_days_ratio": max_pool_days_ratio,
+        "min_rolling_pass_windows": min_rolling_pass_windows,
+        "allow_nonparity": allow_nonparity,
+        "checks": checks,
+        "failures": failures,
+        "pass": not failures,
+    }
+    (base / "QUALITY_GATES.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    if failures and not allow_nonparity:
+        raise SystemExit("Quality gates failed:\n- " + "\n- ".join(failures))
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--base", type=Path, default=REPO_ROOT / "reports" / "prop_sim_compare")
@@ -423,6 +497,13 @@ def main() -> int:
         help="Skip live replay CSV export and prop MC for live_replay (use until reports/live_replay_by_profile trades exist).",
     )
     p.add_argument("--skip-sims", action="store_true")
+    p.add_argument("--max-pool-days-ratio", type=float, default=1.5)
+    p.add_argument("--min-rolling-pass-windows", type=int, default=200)
+    p.add_argument(
+        "--allow-nonparity",
+        action="store_true",
+        help="Do not fail command when quality gates fail; still write QUALITY_GATES.json.",
+    )
     args = p.parse_args()
 
     base = args.base.expanduser().resolve()
@@ -467,7 +548,14 @@ def main() -> int:
                 print(f"Sim OK -> {out_dir}")
 
     write_comparison_md(base, args.cohort_horizon)
+    write_quality_gate_report(
+        base,
+        max_pool_days_ratio=args.max_pool_days_ratio,
+        min_rolling_pass_windows=args.min_rolling_pass_windows,
+        allow_nonparity=bool(args.allow_nonparity),
+    )
     print(f"Wrote {base / 'COMPARE_PROP_SIM.md'}")
+    print(f"Wrote {base / 'QUALITY_GATES.json'}")
     return 0
 
 

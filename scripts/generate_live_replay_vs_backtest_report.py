@@ -10,6 +10,7 @@ Live replay: live_backtest_trades (and trades CSV) from phoenix_live_pace_replay
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -181,6 +182,8 @@ def build_markdown(
     live_dir: Path,
     out_md: Path,
     data_dir_fallback: Path | None,
+    strict_replay_metadata: bool,
+    max_trade_count_delta_pct: float,
 ) -> str:
     live_dir = live_dir.resolve()
     json_files = sorted(
@@ -204,6 +207,7 @@ def build_markdown(
         "Per-day realized PnL can still line up on the same number of Eastern trading days when you bucket exits by date.",
         "",
     ]
+    metadata_failures: list[str] = []
 
     for jpath in json_files:
         data = json.loads(jpath.read_text(encoding="utf-8"))
@@ -229,6 +233,17 @@ def build_markdown(
 
         live_lt = data.get("live_backtest_trades")
         trades_csv = Path(str(data.get("trades_csv", "")))
+        required_meta = (
+            "timeline_points",
+            "steps_executed",
+            "step_mode",
+            "sim_step_seconds",
+            "entry_fill_mode",
+            "live_backtest_trades",
+        )
+        missing_meta = [k for k in required_meta if k not in data]
+        if missing_meta:
+            metadata_failures.append(f"{preset_name}: missing metadata fields: {', '.join(missing_meta)}")
         if not isinstance(live_lt, dict) or "n_trades" not in live_lt:
             live_lt = _trade_block_from_csv(trades_csv) if trades_csv.is_file() else {}
         else:
@@ -272,6 +287,59 @@ def build_markdown(
             "gross_profit_usd": float(live_lt.get("gross_profit_usd", 0.0)),
             "gross_loss_usd": float(live_lt.get("gross_loss_usd", 0.0)),
         }
+        trade_count_delta_pct = (
+            (abs(float(live["n_trades"]) - float(trad["n_trades"])) / max(1.0, float(trad["n_trades"]))) * 100.0
+        )
+        parity_pass = trade_count_delta_pct <= max_trade_count_delta_pct
+
+        diff_csv = live_dir / f"{preset_name}_trade_diff.csv"
+        diff_json = live_dir / f"{preset_name}_trade_diff_summary.json"
+        if trades_csv.is_file() and not merged.empty:
+            live_df = pd.read_csv(trades_csv)
+            trad_df = merged.copy()
+            if "entry_ts_et" in live_df.columns and "exit_ts_et" in live_df.columns:
+                live_df["_key"] = (
+                    live_df["instrument"].astype(str)
+                    + "|"
+                    + live_df["entry_ts_et"].astype(str)
+                    + "|"
+                    + live_df["exit_ts_et"].astype(str)
+                    + "|"
+                    + live_df.get("direction", pd.Series([""] * len(live_df))).astype(str)
+                )
+            else:
+                live_df["_key"] = live_df.index.astype(str)
+            trad_df["_key"] = (
+                trad_df["instrument"].astype(str)
+                + "|"
+                + trad_df["entry_ts"].astype(str)
+                + "|"
+                + trad_df["exit_ts"].astype(str)
+                + "|"
+                + trad_df["direction"].astype(str)
+            )
+            live_keys = set(live_df["_key"].astype(str))
+            trad_keys = set(trad_df["_key"].astype(str))
+            only_live = sorted(live_keys - trad_keys)
+            only_trad = sorted(trad_keys - live_keys)
+            pd.DataFrame(
+                [{"bucket": "only_live", "key": k} for k in only_live]
+                + [{"bucket": "only_traditional", "key": k} for k in only_trad]
+            ).to_csv(diff_csv, index=False)
+            diff_json.write_text(
+                json.dumps(
+                    {
+                        "preset": preset_name,
+                        "max_trade_count_delta_pct": max_trade_count_delta_pct,
+                        "trade_count_delta_pct": trade_count_delta_pct,
+                        "parity_pass": parity_pass,
+                        "only_live_count": len(only_live),
+                        "only_traditional_count": len(only_trad),
+                    },
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
 
         lines.extend(
             [
@@ -378,6 +446,11 @@ def build_markdown(
                 f"| Step mode | {data.get('step_mode', '—')} |",
                 f"| Sim step seconds | {data.get('sim_step_seconds', '—')} |",
                 f"| Entry fill mode | {data.get('entry_fill_mode', '—')} |",
+                f"| Trade CSV SHA256 | {hashlib.sha256(trades_csv.read_bytes()).hexdigest() if trades_csv.is_file() else '—'} |",
+                f"| Trade-count parity threshold | <= {max_trade_count_delta_pct:.2f}% delta |",
+                f"| Trade-count parity status | {'PASS' if parity_pass else 'FAIL'} ({trade_count_delta_pct:.2f}%) |",
+                f"| Parity diff CSV | `{diff_csv}` |",
+                f"| Parity diff summary | `{diff_json}` |",
                 "",
             ]
         )
@@ -385,6 +458,12 @@ def build_markdown(
     lines.append(
         "---\n\n*Generated by `scripts/generate_live_replay_vs_backtest_report.py`.*\n"
     )
+    if metadata_failures:
+        lines.extend(["## Replay Metadata Warnings", ""])
+        lines.extend([f"- {m}" for m in metadata_failures])
+        lines.append("")
+    if strict_replay_metadata and metadata_failures:
+        raise SystemExit("Strict replay metadata check failed:\n- " + "\n- ".join(metadata_failures))
     text = "\n".join(lines)
     out_md.parent.mkdir(parents=True, exist_ok=True)
     out_md.write_text(text, encoding="utf-8")
@@ -409,6 +488,8 @@ def main() -> int:
         default=None,
         help="If a profile JSON data_dir is missing, use this path",
     )
+    p.add_argument("--strict-replay-metadata", action="store_true")
+    p.add_argument("--max-trade-count-delta-pct", type=float, default=35.0)
     args = p.parse_args()
     fallback = None
     if args.data_dir is not None:
@@ -419,7 +500,13 @@ def main() -> int:
         except FileNotFoundError:
             fallback = None
 
-    build_markdown(live_dir=args.live_dir, out_md=args.out, data_dir_fallback=fallback)
+    build_markdown(
+        live_dir=args.live_dir,
+        out_md=args.out,
+        data_dir_fallback=fallback,
+        strict_replay_metadata=bool(args.strict_replay_metadata),
+        max_trade_count_delta_pct=float(args.max_trade_count_delta_pct),
+    )
     print(f"Wrote {args.out}")
     return 0
 

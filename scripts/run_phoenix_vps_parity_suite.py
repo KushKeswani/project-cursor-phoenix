@@ -34,7 +34,9 @@ Output: JSON at ``reports/vps_parity_<start>_<end>.json`` unless ``--out-json`` 
 from __future__ import annotations
 
 import argparse
+import json
 import os
+import platform
 import subprocess
 import sys
 from pathlib import Path
@@ -77,6 +79,8 @@ def main() -> int:
         help="Faster: signal counts only (omit run_backtest WR/PF block)",
     )
     p.add_argument("--max-steps", type=int, default=None)
+    p.add_argument("--batch-trades-csv", type=Path, default=None)
+    p.add_argument("--parity-max-trade-delta-pct", type=float, default=35.0)
     args = p.parse_args()
 
     data_dir = Path(args.data_dir).expanduser().resolve()
@@ -130,6 +134,51 @@ def main() -> int:
     print("Running:", " ".join(cmd), flush=True)
     proc = subprocess.run(cmd, cwd=str(REPO_ROOT), env=env)
     if proc.returncode == 0:
+        try:
+            payload = json.loads(out_json.read_text(encoding="utf-8"))
+        except Exception:
+            payload = {}
+        payload["run_provenance"] = {
+            "python_executable": sys.executable,
+            "python_version": sys.version.replace("\n", " "),
+            "platform": platform.platform(),
+            "cwd": str(REPO_ROOT),
+            "command": cmd,
+        }
+        if args.batch_trades_csv:
+            bcsv = Path(args.batch_trades_csv).expanduser().resolve()
+            if bcsv.exists():
+                try:
+                    import pandas as pd
+
+                    replay_csv = Path(str(payload.get("trades_csv", "")))
+                    if replay_csv.exists():
+                        bdf = pd.read_csv(bcsv)
+                        rdf = pd.read_csv(replay_csv)
+                        b = len(bdf)
+                        r = len(rdf)
+                        pct = (abs(r - b) / max(1, b)) * 100.0
+                        parity = pct <= float(args.parity_max_trade_delta_pct)
+                        diff_path = out_json.with_name(out_json.stem + "_parity_diff.json")
+                        diff_path.write_text(
+                            json.dumps(
+                                {
+                                    "batch_trades_csv": str(bcsv),
+                                    "replay_trades_csv": str(replay_csv),
+                                    "batch_trade_count": b,
+                                    "replay_trade_count": r,
+                                    "trade_count_delta_pct": pct,
+                                    "max_trade_delta_pct": args.parity_max_trade_delta_pct,
+                                    "parity_pass": parity,
+                                },
+                                indent=2,
+                            ),
+                            encoding="utf-8",
+                        )
+                        payload["parity_diff_json"] = str(diff_path)
+                except Exception:
+                    pass
+        out_json.write_text(json.dumps(payload, indent=2), encoding="utf-8")
         print(f"OK — wrote {out_json}", flush=True)
     else:
         print(f"Failed with exit code {proc.returncode}", flush=True)
