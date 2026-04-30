@@ -163,7 +163,7 @@ def compute_risk_metrics(
 
         if isinstance(daily_pnl.index, pd.DatetimeIndex):
             w = daily_pnl.resample("W").sum()
-            m = daily_pnl.resample("M").sum()
+            m = daily_pnl.resample("ME").sum()
             out["worst_week"] = float(w.min()) if not w.empty else 0.0
             out["worst_month"] = float(m.min()) if not m.empty else 0.0
 

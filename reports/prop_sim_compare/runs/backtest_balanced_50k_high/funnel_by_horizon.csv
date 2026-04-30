@@ -1,0 +1,71 @@
+horizon_label,bucket_key,bucket_label,pct_of_simulations
+1 Week,eval_insufficient_history,Audition: pool shorter than eval window (cannot score),0.0
+1 Week,eval_fail_trailing_drawdown,Audition: max trailing drawdown,2.5
+1 Week,eval_fail_daily_loss_limit,Audition: daily loss limit,0.0
+1 Week,eval_expire_unpassed,Audition: window ended (no pass),21.166666666666668
+1 Week,pass_no_funded_days,"Passed eval, no funded days left in horizon",13.0
+1 Week,funded_breach_before_first_payout,Funded: breach before 1st payout,1.1666666666666667
+1 Week,funded_breach_after_payouts,Funded: breach after ≥1 payout,0.0
+1 Week,funded_breach_zero_payouts,"Funded: breach, zero payouts (edge)",0.0
+1 Week,funded_survived_segment,Funded: survived funded segment (no trail hit),62.166666666666664
+1 Week,empty_pool,Empty pool,0.0
+1 Month,eval_insufficient_history,Audition: pool shorter than eval window (cannot score),0.0
+1 Month,eval_fail_trailing_drawdown,Audition: max trailing drawdown,2.3333333333333335
+1 Month,eval_fail_daily_loss_limit,Audition: daily loss limit,0.0
+1 Month,eval_expire_unpassed,Audition: window ended (no pass),0.8333333333333334
+1 Month,pass_no_funded_days,"Passed eval, no funded days left in horizon",0.0
+1 Month,funded_breach_before_first_payout,Funded: breach before 1st payout,4.333333333333333
+1 Month,funded_breach_after_payouts,Funded: breach after ≥1 payout,68.66666666666667
+1 Month,funded_breach_zero_payouts,"Funded: breach, zero payouts (edge)",0.0
+1 Month,funded_survived_segment,Funded: survived funded segment (no trail hit),23.833333333333332
+1 Month,empty_pool,Empty pool,0.0
+1 Quarter,eval_insufficient_history,Audition: pool shorter than eval window (cannot score),0.0
+1 Quarter,eval_fail_trailing_drawdown,Audition: max trailing drawdown,3.0
+1 Quarter,eval_fail_daily_loss_limit,Audition: daily loss limit,0.0
+1 Quarter,eval_expire_unpassed,Audition: window ended (no pass),0.0
+1 Quarter,pass_no_funded_days,"Passed eval, no funded days left in horizon",0.0
+1 Quarter,funded_breach_before_first_payout,Funded: breach before 1st payout,3.6666666666666665
+1 Quarter,funded_breach_after_payouts,Funded: breach after ≥1 payout,93.33333333333333
+1 Quarter,funded_breach_zero_payouts,"Funded: breach, zero payouts (edge)",0.0
+1 Quarter,funded_survived_segment,Funded: survived funded segment (no trail hit),0.0
+1 Quarter,empty_pool,Empty pool,0.0
+6 Months,eval_insufficient_history,Audition: pool shorter than eval window (cannot score),0.0
+6 Months,eval_fail_trailing_drawdown,Audition: max trailing drawdown,1.5
+6 Months,eval_fail_daily_loss_limit,Audition: daily loss limit,0.0
+6 Months,eval_expire_unpassed,Audition: window ended (no pass),0.0
+6 Months,pass_no_funded_days,"Passed eval, no funded days left in horizon",0.0
+6 Months,funded_breach_before_first_payout,Funded: breach before 1st payout,5.666666666666667
+6 Months,funded_breach_after_payouts,Funded: breach after ≥1 payout,92.83333333333333
+6 Months,funded_breach_zero_payouts,"Funded: breach, zero payouts (edge)",0.0
+6 Months,funded_survived_segment,Funded: survived funded segment (no trail hit),0.0
+6 Months,empty_pool,Empty pool,0.0
+12 Months,eval_insufficient_history,Audition: pool shorter than eval window (cannot score),0.0
+12 Months,eval_fail_trailing_drawdown,Audition: max trailing drawdown,2.3333333333333335
+12 Months,eval_fail_daily_loss_limit,Audition: daily loss limit,0.0
+12 Months,eval_expire_unpassed,Audition: window ended (no pass),0.0
+12 Months,pass_no_funded_days,"Passed eval, no funded days left in horizon",0.0
+12 Months,funded_breach_before_first_payout,Funded: breach before 1st payout,4.333333333333333
+12 Months,funded_breach_after_payouts,Funded: breach after ≥1 payout,93.33333333333333
+12 Months,funded_breach_zero_payouts,"Funded: breach, zero payouts (edge)",0.0
+12 Months,funded_survived_segment,Funded: survived funded segment (no trail hit),0.0
+12 Months,empty_pool,Empty pool,0.0
+18 Months,eval_insufficient_history,Audition: pool shorter than eval window (cannot score),0.0
+18 Months,eval_fail_trailing_drawdown,Audition: max trailing drawdown,3.5
+18 Months,eval_fail_daily_loss_limit,Audition: daily loss limit,0.0
+18 Months,eval_expire_unpassed,Audition: window ended (no pass),0.0
+18 Months,pass_no_funded_days,"Passed eval, no funded days left in horizon",0.0
+18 Months,funded_breach_before_first_payout,Funded: breach before 1st payout,5.5
+18 Months,funded_breach_after_payouts,Funded: breach after ≥1 payout,91.0
+18 Months,funded_breach_zero_payouts,"Funded: breach, zero payouts (edge)",0.0
+18 Months,funded_survived_segment,Funded: survived funded segment (no trail hit),0.0
+18 Months,empty_pool,Empty pool,0.0
+24 Months,eval_insufficient_history,Audition: pool shorter than eval window (cannot score),0.0
+24 Months,eval_fail_trailing_drawdown,Audition: max trailing drawdown,2.5
+24 Months,eval_fail_daily_loss_limit,Audition: daily loss limit,0.0
+24 Months,eval_expire_unpassed,Audition: window ended (no pass),0.0
+24 Months,pass_no_funded_days,"Passed eval, no funded days left in horizon",0.0
+24 Months,funded_breach_before_first_payout,Funded: breach before 1st payout,4.333333333333333
+24 Months,funded_breach_after_payouts,Funded: breach after ≥1 payout,93.16666666666667
+24 Months,funded_breach_zero_payouts,"Funded: breach, zero payouts (edge)",0.0
+24 Months,funded_survived_segment,Funded: survived funded segment (no trail hit),0.0
+24 Months,empty_pool,Empty pool,0.0

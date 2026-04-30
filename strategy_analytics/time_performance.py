@@ -48,7 +48,7 @@ def compute_time_performance(daily_pnl: pd.Series, equity: pd.Series) -> dict[st
 
     if isinstance(pnl.index, pd.DatetimeIndex):
         w = pnl.resample("W").sum()
-        m = pnl.resample("M").sum()
+        m = pnl.resample("ME").sum()
         q = pnl.resample("Q").sum()
         out["avg_week"] = float(w.mean()) if not w.empty else 0.0
         out["avg_month"] = float(m.mean()) if not m.empty else 0.0

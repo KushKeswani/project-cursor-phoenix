@@ -1,0 +1,69 @@
+# Prop evaluation rules — prefilled from screenshots (verify before relying).
+# Copy to another path and pass --rules if you want overrides without editing this file.
+
+profiles:
+  tradeify_50k_eval:
+    label: "Tradeify 50K PRO EVAL"
+    account_size_label: "50K"
+    profit_target_usd: 3000
+    trailing_drawdown_usd: 2000
+    daily_loss_limit_usd: 1200
+    consistency_max_best_day_fraction: null
+    min_trading_days: 1
+    eval_window_days: 60
+    max_contracts_note: "4 mini OR 40 micro"
+
+  tradeify_150k_eval:
+    label: "Tradeify 150K PRO EVAL"
+    account_size_label: "150K"
+    profit_target_usd: 9000
+    trailing_drawdown_usd: 4500
+    daily_loss_limit_usd: 2700
+    consistency_max_best_day_fraction: null
+    min_trading_days: 1
+    eval_window_days: 60
+    max_contracts_note: "10 mini OR 100 micro"
+
+  topstep_50k_eval:
+    label: "Topstep 50K (eval card)"
+    account_size_label: "50K"
+    profit_target_usd: 3000
+    trailing_drawdown_usd: 2000
+    daily_loss_limit_usd: null
+    consistency_max_best_day_fraction: null
+    min_trading_days: 1
+    eval_window_days: 60
+    max_contracts_note: "5 contracts"
+
+  topstep_150k_eval:
+    label: "Topstep 150K (eval card)"
+    account_size_label: "150K"
+    profit_target_usd: 9000
+    trailing_drawdown_usd: 4500
+    daily_loss_limit_usd: null
+    consistency_max_best_day_fraction: null
+    min_trading_days: 1
+    eval_window_days: 60
+    max_contracts_note: "15 contracts"
+
+  lucid_50k_eval:
+    label: "Select 50K — Evaluation (Tradovate) / Lucid slot"
+    account_size_label: "50K"
+    profit_target_usd: 2500
+    trailing_drawdown_usd: 2000
+    daily_loss_limit_usd: null
+    consistency_max_best_day_fraction: 0.40
+    min_trading_days: 1
+    eval_window_days: 60
+    max_contracts_note: "4 minis / 40 micros"
+
+  lucid_150k_eval:
+    label: "Select 150K — Evaluation (Tradovate) / Lucid slot"
+    account_size_label: "150K"
+    profit_target_usd: 9000
+    trailing_drawdown_usd: 4500
+    daily_loss_limit_usd: null
+    consistency_max_best_day_fraction: 0.40
+    min_trading_days: 1
+    eval_window_days: 60
+    max_contracts_note: "12 minis / 120 micros"

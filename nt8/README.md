@@ -33,6 +33,7 @@ The strategy code is aligned with `scripts/engine/fast_engine.py` and **`get_con
 2. **Trading hours template** — Must include the full session window (e.g. **08:00** start for CL/MNQ/YM so the opening-range bars exist).
 3. **Timezone** — Data should be exchange-time **ET**; use **Timezone Offset (minutes)** on the strategy only if your series is shifted.
 4. **Same test window** — Backtest the **same symbol and calendar range** you used in Python (Databento-derived 1m → resampled bars in Python vs NT chart series).
+5. **Python export for compare** — Generate `reports/trade_executions/oos/instruments/*.csv` via `python scripts/export_trade_executions.py --start YYYY-MM-DD --end YYYY-MM-DD` (or `python scripts/run_evaluation_kit.py`) so `scripts/verify_nt8_fidelity.py` has a Python-side baseline.
 
 ### Export NT8 trades
 

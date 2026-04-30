@@ -1,0 +1,21 @@
+# Funded-account payout simulation (simplified bucket model).
+# Edit amounts to match current firm docs.
+
+rulesets:
+  lucid_50k_funded:
+    label: "Lucid 50K PRO FUNDED"
+    payout_increment_usd: 500
+    min_trading_days_between_payouts: 3
+    notes: "Payout profit target $500, Days to payout 3 (UI). No LucidScale/DLL/balance trail in this v1 model."
+
+  tradeify_50k_funded_daily_path:
+    label: "Tradeify-style 50K funded — Daily path (illustrative)"
+    payout_increment_usd: 1000
+    min_trading_days_between_payouts: 3
+    notes: "Select 50k funded Daily path showed max payout $1,000; min days assumed 3 for comparability."
+
+  flat_500_1d:
+    label: "Simple $500 / 1 trading day (stress: frequent payouts)"
+    payout_increment_usd: 500
+    min_trading_days_between_payouts: 1
+    notes: "Hypothetical if min days were 1."

@@ -44,6 +44,17 @@ python -m pytest tests/test_live_scripts_smoke.py -v
 
 If data is missing, the replay portion is **skipped** but CLI checks should still pass.
 
+### Offline Phoenix scan (ProjectX code path, **no API keys**)
+
+Runs `projectx.strategy.phoenix_auto.run_scan_once` against **local parquet** only:
+
+```bash
+python scripts/phoenix_local_scan_once.py --data-dir Data-DataBento \
+  --instruments MNQ --contracts 1 --as-of-et "2025-06-03 11:30:00"
+```
+
+Optional JSON output: add `--json-out reports/phoenix_local_scan_hit.json`. Use `--replay-range-start-et` for causal bar prefixes.
+
 ---
 
 ## 1. Local live-pace replay (historical bars, no broker)

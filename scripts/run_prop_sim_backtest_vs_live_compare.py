@@ -417,6 +417,11 @@ def main() -> int:
     p.add_argument("--cohort-horizon", default="6 Months")
     p.add_argument("--skip-export-backtest", action="store_true")
     p.add_argument("--skip-export-live", action="store_true")
+    p.add_argument(
+        "--skip-live-replay-path",
+        action="store_true",
+        help="Skip live replay CSV export and prop MC for live_replay (use until reports/live_replay_by_profile trades exist).",
+    )
     p.add_argument("--skip-sims", action="store_true")
     args = p.parse_args()
 
@@ -433,14 +438,17 @@ def main() -> int:
         )
         print(f"Wrote backtest execution exports under {base / 'backtest'}", flush=True)
 
-    if not args.skip_export_live:
+    if not args.skip_export_live and not args.skip_live_replay_path:
         export_live_replay_folder(base=base, live_dir=args.live_dir)
         print(f"Wrote live replay execution exports under {base / 'live_replay'}", flush=True)
 
     if not args.skip_sims:
         runs = base / "runs"
         runs.mkdir(parents=True, exist_ok=True)
-        for source in ("backtest", "live_replay"):
+        sources = ("backtest", "live_replay")
+        for source in sources:
+            if source == "live_replay" and args.skip_live_replay_path:
+                continue
             for preset_key, portfolio, firm_preset in PRESET_RUNS:
                 slug = _preset_slug(preset_key)
                 exec_root = base / source / slug

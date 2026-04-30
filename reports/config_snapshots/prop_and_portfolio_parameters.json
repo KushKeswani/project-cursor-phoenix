@@ -1,0 +1,66 @@
+{
+  "generated_at_utc": "2026-04-30T01:03:37.509024+00:00",
+  "backtester_monte_carlo_defaults": {
+    "EOD_DD_usd": 5000.0,
+    "DLL_usd": 3000.0,
+    "EVAL_DAYS": 60
+  },
+  "portfolio": {
+    "instruments_order": [
+      "CL",
+      "MGC",
+      "MNQ",
+      "YM"
+    ],
+    "presets": {
+      "Balanced_50k_high": {
+        "CL": 0,
+        "MGC": 5,
+        "MNQ": 4,
+        "YM": 1
+      },
+      "Balanced_50k_survival": {
+        "CL": 0,
+        "MGC": 3,
+        "MNQ": 1,
+        "YM": 1
+      },
+      "Balanced_150k_high": {
+        "CL": 1,
+        "MGC": 11,
+        "MNQ": 3,
+        "YM": 1
+      },
+      "Balanced_150k_survival": {
+        "CL": 1,
+        "MGC": 7,
+        "MNQ": 2,
+        "YM": 1
+      }
+    },
+    "preset_notes": {
+      "Balanced_50k_high": "50k high \u2014 no CL. CL 0 / MGC 5 / MNQ 4 / YM 1. Re-run MC with your EOD/DLL.",
+      "Balanced_50k_survival": "50k survival \u2014 no CL. CL 0 / MGC 3 / MNQ 1 / YM 1. Re-run MC with --eod-dd / --dll.",
+      "Balanced_150k_high": "150k high \u2014 CL 1 / MGC 11 / MNQ 3 / YM 1. EOD $5k / DLL $3k MC band in past sweeps.",
+      "Balanced_150k_survival": "150k survival \u2014 CL 1 / MGC 7 / MNQ 2 / YM 1 (~0.64\u00d7 full Balanced). Typical MC band: EOD $5k / DLL $3k."
+    },
+    "preset_display_titles": {
+      "Balanced_50k_high": "Balanced $50k high \u2014 CL 0 / MGC 5 / MNQ 4 / YM 1",
+      "Balanced_50k_survival": "Balanced $50k survival \u2014 CL 0 / MGC 3 / MNQ 1 / YM 1",
+      "Balanced_150k_high": "Balanced $150k high \u2014 CL 1 / MGC 11 / MNQ 3 / YM 1",
+      "Balanced_150k_survival": "Balanced $150k survival \u2014 CL 1 / MGC 7 / MNQ 2 / YM 1"
+    },
+    "four_tier_profiles": {
+      "50k_high": "Balanced_50k_high",
+      "50k_low": "Balanced_50k_survival",
+      "150k_high": "Balanced_150k_high",
+      "150k_low": "Balanced_150k_survival"
+    }
+  },
+  "projectx_settings_yaml": "# ProjectX live execution \u2014 credentials: use projectx/.env (see .env.example)\n# or export PROJECTX_USERNAME, PROJECTX_API_KEY, PROJECTX_ACCOUNT_ID.\n#\n# API host must match your firm. TopstepX \u2192 api.topstepx.com (loginKey path is /api/Auth/loginKey).\n# Other ProjectX firms may use https://api.thefuturesdesk.projectx.com (see Gateway connection URLs).\n\napi:\n  base_url: \"https://api.topstepx.com\"\n  rtc_user_hub: \"https://rtc.topstepx.com/hubs/user\"\n\ncredentials:\n  user_name: \"\"\n  api_key: \"\"\n\ntrading:\n  account_id: null\n  live_contracts: true\n  instruments:\n    - symbol: MNQ\n      search_text: \"MNQ\"\n    - symbol: NQ\n      search_text: \"NQ\"\n    - symbol: CL\n      search_text: \"CL\"\n    - symbol: YM\n      # Mini Dow ($5/pt). Gateway search \"YM\" can return MYM first; code picks mini (excludes MYM).\n      search_text: \"YM\"\n    - symbol: MGC\n      search_text: \"MGC\"\n\nexecution:\n  dry_run: true\n  # --- Phoenix entry policy (live vs backtest parity) ---\n  # With phoenix_entry_order: limit, ProjectX sends a resting **stop** at the engine trigger price.\n  # If the last bar close is already through that level, the exchange treats the buy/sell stop as\n  # invalid vs last \u2014 see entry_breakout_stop_valid in projectx/strategy/phoenix_auto.py. The engine\n  # may still model a fill at the trigger (zero-slippage touch), so live can **skip** while backtest\n  # shows a trade. Remedies: (1) accept the skip, (2) use CLI --phoenix-market-entry for immediate\n  # market on signal, or (3) align research ExecutionOptions with the same story you trade live.\n  #\n  # Phoenix --phoenix-auto: parent order type. \"limit\" here means **stop@trigger** (breakout stop),\n  # not a passive limit order. Use --phoenix-market-entry for immediate market.\n  # phoenix_arm_orders: place buy/sell stop brackets at long/short levels when the trade window opens\n  # (default true). Set false or use --phoenix-no-arm-orders to disable.\n  phoenix_entry_order: limit\n  phoenix_arm_orders: true\n  # Phoenix scan: \"touch\"|\"touch_legacy\" = high\u2265long/low\u2264short (research default); \"touch_strict\" = wick-through.\n  phoenix_entry_fill: touch\n  # When true (default), Phoenix sends Telegram if PROJECTX_TELEGRAM_* env vars are set.\n  # Set false to disable Telegram for Phoenix without using --phoenix-no-telegram.\n  phoenix_telegram: true\n\nrisk:\n  max_daily_loss_usd: 500\n  max_drawdown_from_peak_usd: 1500\n  max_position_contracts: 10\n  max_trades_per_day: 10\n  max_consecutive_losses: 3\n  ny_session:\n    enabled: true\n    start: \"09:30\"\n    end: \"16:00\"\n  emergency_halt: false\n  kill_switch_path: null\n\nlogging:\n  level: INFO\n  file: \"projectx/logs/projectx.log\"\n\nauth:\n  refresh_margin_seconds: 1800\n  request_timeout_seconds: 30\n",
+  "embedded_yaml_files": {
+    "scripts/configs/prop_firm_rules_phoenix.yaml": "# Phoenix quarter \u2014 user-specified eval numbers (verify vs live firm rules).\n# 50k: $3,000 profit target, $2,000 trailing drawdown.\n# 150k: $9,000 profit target, $4,500 trailing drawdown.\n# Lucid rows include 40% consistency (best day / cumulative profit at pass).\n#\n# \"Funded survival\" rows use an enormous profit target so paths almost never \"pass\";\n# bust_pct \u2248 probability of hitting trailing (or DLL) within eval_window_days \u2014 a coarse risk proxy.\n\nprofiles:\n  phoenix_topstep_50k_eval:\n    label: \"Phoenix Topstep-style 50K eval\"\n    account_size_label: \"50K\"\n    profit_target_usd: 3000\n    trailing_drawdown_usd: 2000\n    daily_loss_limit_usd: null\n    consistency_max_best_day_fraction: null\n    min_trading_days: 1\n    eval_window_days: 60\n    max_contracts_note: \"User Phoenix params\"\n\n  phoenix_topstep_50k_funded_survival:\n    label: \"Phoenix Topstep 50K funded \u2014 120d survival proxy (no PT)\"\n    account_size_label: \"50K\"\n    profit_target_usd: 1000000000\n    trailing_drawdown_usd: 2000\n    daily_loss_limit_usd: null\n    consistency_max_best_day_fraction: null\n    min_trading_days: 1\n    eval_window_days: 120\n    max_contracts_note: \"bust% = trail/DLL hit in 120 resampled days\"\n\n  phoenix_lucid_50k_eval:\n    label: \"Phoenix Lucid-style 50K eval (40% consistency)\"\n    account_size_label: \"50K\"\n    profit_target_usd: 3000\n    trailing_drawdown_usd: 2000\n    daily_loss_limit_usd: null\n    consistency_max_best_day_fraction: 0.40\n    min_trading_days: 1\n    eval_window_days: 60\n    max_contracts_note: \"User Phoenix params\"\n\n  phoenix_lucid_50k_funded_survival:\n    label: \"Phoenix Lucid 50K funded \u2014 120d survival proxy\"\n    account_size_label: \"50K\"\n    profit_target_usd: 1000000000\n    trailing_drawdown_usd: 2000\n    daily_loss_limit_usd: null\n    consistency_max_best_day_fraction: null\n    min_trading_days: 1\n    eval_window_days: 120\n    max_contracts_note: \"Consistency not applied for survival proxy\"\n\n  phoenix_topstep_150k_eval:\n    label: \"Phoenix Topstep-style 150K eval\"\n    account_size_label: \"150K\"\n    profit_target_usd: 9000\n    trailing_drawdown_usd: 4500\n    daily_loss_limit_usd: null\n    consistency_max_best_day_fraction: null\n    min_trading_days: 1\n    eval_window_days: 60\n    max_contracts_note: \"User Phoenix params\"\n\n  phoenix_topstep_150k_funded_survival:\n    label: \"Phoenix Topstep 150K funded \u2014 120d survival proxy\"\n    account_size_label: \"150K\"\n    profit_target_usd: 1000000000\n    trailing_drawdown_usd: 4500\n    daily_loss_limit_usd: null\n    consistency_max_best_day_fraction: null\n    min_trading_days: 1\n    eval_window_days: 120\n    max_contracts_note: \"bust% = trail hit in 120 resampled days\"\n\n  phoenix_lucid_150k_eval:\n    label: \"Phoenix Lucid-style 150K eval (40% consistency)\"\n    account_size_label: \"150K\"\n    profit_target_usd: 9000\n    trailing_drawdown_usd: 4500\n    daily_loss_limit_usd: null\n    consistency_max_best_day_fraction: 0.40\n    min_trading_days: 1\n    eval_window_days: 60\n    max_contracts_note: \"User Phoenix params\"\n\n  phoenix_lucid_150k_funded_survival:\n    label: \"Phoenix Lucid 150K funded \u2014 120d survival proxy\"\n    account_size_label: \"150K\"\n    profit_target_usd: 1000000000\n    trailing_drawdown_usd: 4500\n    daily_loss_limit_usd: null\n    consistency_max_best_day_fraction: null\n    min_trading_days: 1\n    eval_window_days: 120\n    max_contracts_note: \"Consistency not applied for survival proxy\"\n\n  # LucidFlex-style challenge (no 40% consistency); PT/trail match Topstep Phoenix rows.\n  phoenix_lucidflex_50k_eval:\n    label: \"Phoenix LucidFlex-style 50K eval (no consistency)\"\n    account_size_label: \"50K\"\n    profit_target_usd: 3000\n    trailing_drawdown_usd: 2000\n    daily_loss_limit_usd: null\n    consistency_max_best_day_fraction: null\n    min_trading_days: 1\n    eval_window_days: 60\n    max_contracts_note: \"LucidFlex challenge model \u2014 verify vs live LucidFlex\"\n\n  phoenix_lucidflex_150k_eval:\n    label: \"Phoenix LucidFlex-style 150K eval (no consistency)\"\n    account_size_label: \"150K\"\n    profit_target_usd: 9000\n    trailing_drawdown_usd: 4500\n    daily_loss_limit_usd: null\n    consistency_max_best_day_fraction: null\n    min_trading_days: 1\n    eval_window_days: 60\n    max_contracts_note: \"LucidFlex challenge model \u2014 verify vs live LucidFlex\"\n",
+    "scripts/configs/prop_firm_rules.example.yaml": "# Prop evaluation rules \u2014 prefilled from screenshots (verify before relying).\n# Copy to another path and pass --rules if you want overrides without editing this file.\n\nprofiles:\n  tradeify_50k_eval:\n    label: \"Tradeify 50K PRO EVAL\"\n    account_size_label: \"50K\"\n    profit_target_usd: 3000\n    trailing_drawdown_usd: 2000\n    daily_loss_limit_usd: 1200\n    consistency_max_best_day_fraction: null\n    min_trading_days: 1\n    eval_window_days: 60\n    max_contracts_note: \"4 mini OR 40 micro\"\n\n  tradeify_150k_eval:\n    label: \"Tradeify 150K PRO EVAL\"\n    account_size_label: \"150K\"\n    profit_target_usd: 9000\n    trailing_drawdown_usd: 4500\n    daily_loss_limit_usd: 2700\n    consistency_max_best_day_fraction: null\n    min_trading_days: 1\n    eval_window_days: 60\n    max_contracts_note: \"10 mini OR 100 micro\"\n\n  topstep_50k_eval:\n    label: \"Topstep 50K (eval card)\"\n    account_size_label: \"50K\"\n    profit_target_usd: 3000\n    trailing_drawdown_usd: 2000\n    daily_loss_limit_usd: null\n    consistency_max_best_day_fraction: null\n    min_trading_days: 1\n    eval_window_days: 60\n    max_contracts_note: \"5 contracts\"\n\n  topstep_150k_eval:\n    label: \"Topstep 150K (eval card)\"\n    account_size_label: \"150K\"\n    profit_target_usd: 9000\n    trailing_drawdown_usd: 4500\n    daily_loss_limit_usd: null\n    consistency_max_best_day_fraction: null\n    min_trading_days: 1\n    eval_window_days: 60\n    max_contracts_note: \"15 contracts\"\n\n  lucid_50k_eval:\n    label: \"Select 50K \u2014 Evaluation (Tradovate) / Lucid slot\"\n    account_size_label: \"50K\"\n    profit_target_usd: 2500\n    trailing_drawdown_usd: 2000\n    daily_loss_limit_usd: null\n    consistency_max_best_day_fraction: 0.40\n    min_trading_days: 1\n    eval_window_days: 60\n    max_contracts_note: \"4 minis / 40 micros\"\n\n  lucid_150k_eval:\n    label: \"Select 150K \u2014 Evaluation (Tradovate) / Lucid slot\"\n    account_size_label: \"150K\"\n    profit_target_usd: 9000\n    trailing_drawdown_usd: 4500\n    daily_loss_limit_usd: null\n    consistency_max_best_day_fraction: 0.40\n    min_trading_days: 1\n    eval_window_days: 60\n    max_contracts_note: \"12 minis / 120 micros\"\n",
+    "scripts/configs/funded_payout_rules.example.yaml": "# Funded-account payout simulation (simplified bucket model).\n# Edit amounts to match current firm docs.\n\nrulesets:\n  lucid_50k_funded:\n    label: \"Lucid 50K PRO FUNDED\"\n    payout_increment_usd: 500\n    min_trading_days_between_payouts: 3\n    notes: \"Payout profit target $500, Days to payout 3 (UI). No LucidScale/DLL/balance trail in this v1 model.\"\n\n  tradeify_50k_funded_daily_path:\n    label: \"Tradeify-style 50K funded \u2014 Daily path (illustrative)\"\n    payout_increment_usd: 1000\n    min_trading_days_between_payouts: 3\n    notes: \"Select 50k funded Daily path showed max payout $1,000; min days assumed 3 for comparability.\"\n\n  flat_500_1d:\n    label: \"Simple $500 / 1 trading day (stress: frequent payouts)\"\n    payout_increment_usd: 500\n    min_trading_days_between_payouts: 1\n    notes: \"Hypothetical if min days were 1.\"\n"
+  }
+}

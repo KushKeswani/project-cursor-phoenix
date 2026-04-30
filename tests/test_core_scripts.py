@@ -29,6 +29,9 @@ class TestCoreScriptsHelp(unittest.TestCase):
             "smoke_vps_check.py",
             "backtester.py",
             "phoenix_agent_cycle.py",
+            "export_trade_executions.py",
+            "run_evaluation_kit.py",
+            "phoenix_local_scan_once.py",
         ):
             script = REPO_ROOT / "scripts" / name
             self.assertTrue(script.is_file(), msg=str(script))

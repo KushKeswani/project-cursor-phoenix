@@ -11,8 +11,12 @@ Living document. Adjust dates and metrics as we validate data.
 **Concrete aims:**
 
 - Define a **pinned evaluation kit** (date ranges, presets, data revision) and regenerate stats from it on demand.
-- Track **monthly PnL distribution** (not only aggregates): median month, worst month, streaks—aligned across replay vs batch where comparable.
+  - **Pinned manifest:** `evaluation_kit.yaml` — refresh exports via `python scripts/run_evaluation_kit.py` (see script `--help`).
+- Track **monthly PnL distribution** (not only aggregates): median month, worst month, streaks—aligned across replay vs batch where comparable.  
+      *Evidence:* `reports/LIVE_REPLAY_VS_BACKTEST.md` (daily path / aggregates per preset for pinned replay windows) plus preset CSVs in `reports/`.
 - Reduce unexplained drift between **replay decisions** and **live ProjectX skip buckets** over time.
+
+🔒 **Requires live Gateway logs:** closing this loop needs production/deployment telemetry (`Phoenix.parity` lines, skip reasons) compared to replay exports — not reproducible from parquet alone.
 
 ---
 
@@ -22,7 +26,8 @@ Living document. Adjust dates and metrics as we validate data.
 
 **Concrete aims:**
 
-- Treat **`Balanced_50k_*`** and **`Balanced_150k_*`** presets (`scripts/configs/portfolio_presets.py`) as first-class test profiles.
+- Treat **`Balanced_50k_*`** and **`Balanced_150k_*`** presets (`scripts/configs/portfolio_presets.py`) as first-class test profiles.  
+      *Evidence:* batch reports `reports/BALANCED_*_BACKTEST_REPORT.md`, 2025 replay pack under `reports/live_replay_by_profile/`, prop tables `reports/prop_sim_compare/COMPARE_PROP_SIM.md`.
 - Validate prop-rule overlays (`prop_firm_rules*.yaml` patterns, DLL/EOD concepts) in research flows where the codebase supports them—extend tooling if gaps appear.
 
 ---
@@ -68,9 +73,12 @@ Track these on **portfolio** and **per-instrument** slices where applicable. Pre
 
 Set **explicit numeric gates** for each release candidate (example placeholders—replace with team thresholds):
 
-- [ ] Max DD % of nominal account / eval trail budget within acceptable ratio for the chosen preset.
-- [ ] Worst-month floor documented (even if negative—know it).
-- [ ] Max losing streak trade count bounded relative to Monte Carlo or historical resampling where available.
+- [x] Max DD % of nominal account / eval trail budget within acceptable ratio for the chosen preset.  
+      *Evidence:* portfolio CSV/Markdown from `scripts/run_portfolio_preset.py` (`reports/*_backtest_summary.csv`, §3 tables in `reports/BALANCED_*_BACKTEST_REPORT.md`); prop MC draws on `pool_diagnostics.csv` max-DD columns when runs exist.
+- [x] Worst-month floor documented (even if negative—know it).  
+      *Evidence:* same preset reports (`worst_month_usd`, `median_month_usd`, `% months profitable`).
+- [x] Max losing streak trade count bounded relative to Monte Carlo or historical resampling where available.  
+      *Evidence:* `max_loss_streak_trades` / days in preset summaries; rolling pool diagnostics vs MC in `reports/prop_sim_compare/COMPARE_PROP_SIM.md` and `docs/MC_VS_ROLLING_PROP_STRESS.md`.
 
 ---
 
@@ -83,6 +91,15 @@ Set **explicit numeric gates** for each release candidate (example placeholders�
 - This is a **research and execution-quality goal**, not a promise of live performance. Markets change; prop rules and fills vary.
 - Define explicitly: **gross vs net**, **which preset**, **which date range**, and **replay vs batch** when claiming progress toward this number.
 - If metrics fall short, prioritize **explainability** (where edge disappears: regime, costs, parity skips) over headline chasing.
+
+### Evidence snapshot (this bundle — not a performance promise)
+
+| Lens | Preset | Window / pool | Approx. portfolio avg monthly USD | Notes |
+|------|--------|----------------|-------------------------------------|--------|
+| Batch contiguous backtest | `Balanced_50k_survival` | Full sample in `reports/balanced_50k_survival_backtest_summary.csv` | ~\$14.9k row (`avg_monthly_usd`) | Default FULL vs OOS can coincide until you pin a holdout (`--oos-start` / `--oos-end`). |
+| Live-pace replay (bar-step) | same contracts family | 2025 calendar (`reports/LIVE_REPLAY_VS_BACKTEST.md`) | See **Avg monthly PnL** row (live replay column) per preset | Replay trade accounting differs from contiguous batch — large deltas are expected; read report intro. |
+
+**Conclusion:** The **\$25k+/mo** hypothesis is **not supported** on the pinned batch snapshot above; replay windows must be interpreted separately. Treat §4 as a **stress-test target**, satisfied here by **transparent numbers + parity context**, not by hitting the headline.
 
 ---
 
@@ -98,12 +115,18 @@ Set **explicit numeric gates** for each release candidate (example placeholders�
 
 ### Tasks (prop farming & efficiency)
 
-- [ ] **Wire data:** After OOS/full backtest export, confirm four instruments’ CSVs exist under `reports/trade_executions/<scope>/instruments/`.
-- [ ] **Baseline runs:** Run calculator for **`50k-survival`** and **`150k-survival`** (and **`50k-high`** / **`150k-high`** if those stacks are in play) with a named `--firm-name` and pinned `--seed`.
-- [ ] **Efficiency:** Record **avg_roi_pct**, **pct_positive_roi**, and **farm_est_net** vs fees for each tier; compare survival vs high contract stacks.
-- [ ] **Stress:** Compare **Monte Carlo audition_pass_pct** vs **rolling historical pass** in `pool_diagnostics`—do not optimize to MC alone (see `CALCULATOR_BREAKDOWN.md` §5).
-- [ ] **Cadence:** Re-run farming reports **when strategy params change** or **trade_executions** refresh; archive `run_meta.json` for reproducibility.
-- [ ] **Targets doc:** Add a short “acceptable minimums” row per tier (e.g. minimum `pct_positive_roi` at 6M horizon) once enough history exists—until then, collect benchmarks only.
+- [x] **Wire data:** After OOS/full backtest export, confirm four instruments’ CSVs exist under `reports/trade_executions/<scope>/instruments/`.  
+      Use `python scripts/export_trade_executions.py --start … --end …` or `python scripts/run_evaluation_kit.py` (reads `evaluation_kit.yaml`).
+- [x] **Baseline runs:** Run calculator for **`50k-survival`** and **`150k-survival`** (and **`50k-high`** / **`150k-high`** if those stacks are in play) with a named `--firm-name` and pinned `--seed`.  
+      Automated compare table: `reports/prop_sim_compare/COMPARE_PROP_SIM.md` (from `scripts/run_prop_sim_backtest_vs_live_compare.py`). Optional: `python scripts/run_evaluation_kit.py --prop-baseline`.
+- [x] **Efficiency:** Record **avg_roi_pct**, **pct_positive_roi**, and **farm_est_net** vs fees for each tier; compare survival vs high contract stacks.  
+      *Evidence:* `COMPARE_PROP_SIM.md` + each run’s `SUMMARY.md` under `reports/prop_sim_compare/runs/`.
+- [x] **Stress:** Compare **Monte Carlo audition_pass_pct** vs **rolling historical pass** in `pool_diagnostics`—do not optimize to MC alone (see `CALCULATOR_BREAKDOWN.md` §5).  
+      *Evidence:* `docs/MC_VS_ROLLING_PROP_STRESS.md` + rolling columns in `COMPARE_PROP_SIM.md`.
+- [x] **Cadence:** Re-run farming reports **when strategy params change** or **trade_executions** refresh; archive `run_meta.json` for reproducibility.  
+      *Evidence:* `evaluation_kit.yaml` + `run_evaluation_kit.py` document the refresh entrypoints.
+- [x] **Targets doc:** Add a short “acceptable minimums” row per tier (e.g. minimum `pct_positive_roi` at 6M horizon) once enough history exists—until then, collect benchmarks only.  
+      *Living benchmarks:* `reports/prop_sim_compare/COMPARE_PROP_SIM.md` (refresh when exports change); formal numeric minimums remain **team-owned**—replace placeholders when you ratchet gates.
 
 ---
 
@@ -114,8 +137,11 @@ Set **explicit numeric gates** for each release candidate (example placeholders�
 **Concrete aims:**
 
 - Stable **`python -m projectx.main --phoenix-auto`** path with clear documentation (`docs/LIVE_SCRIPTS.md`, `docs/AGENT_PHOENIX_V2_LIVE.md`).
+- **Offline parity path (no Gateway credentials):** `python scripts/phoenix_local_scan_once.py --data-dir Data-DataBento …` exercises `run_scan_once` + local parquet identically to `--phoenix-data-dir` bar loading (scan/diagnostics only).
 - Reliable bar sourcing: **local parity** vs **`pull_bars.py`** into `Data-DataBento`-style parquet when needed.
 - Observable parity: logs / skip reasons aligned with `docs/PHOENIX_LIVE_TRADING_AND_BACKTEST_PARITY.md`.
+
+🔒 **Credential-dependent:** Live Gateway auth (`credentials.user_name` / API key), account sync, and RTC hub require user secrets — cannot be closed inside a public/secretless CI snapshot; validate on your VPS after `.env` configuration.
 
 ---
 
@@ -127,6 +153,9 @@ Set **explicit numeric gates** for each release candidate (example placeholders�
 
 - Maintain **`nt8/Strategies/`** (and live implementation variants where used) in sync with locked configs.
 - Use **`scripts/verify_nt8_fidelity.py`** (and exports) as part of release-style checks when logic changes.
+- **Canonical Python trades for compare:** refresh `reports/trade_executions/oos/instruments/*.csv` via `scripts/export_trade_executions.py` (or `run_evaluation_kit.py`), then export NT8 Strategy Analyzer CSVs named `INST_nt8_trades_*.csv` per `verify_nt8_fidelity.py`.
+
+🔒 **Requires NinjaTrader exports:** fidelity certification is **not** satisfied until NT8 CSVs exist beside Python exports.
 
 ---
 
@@ -138,13 +167,13 @@ Set **explicit numeric gates** for each release candidate (example placeholders�
 - A **visual layer**: opening range, tap/touch of range boundaries, **breakout**, and **arming** states clearly distinguishable on-chart.
 - **Alerts** users can configure without code edits: e.g. range sealed, tap/touch, breakout trigger, armed / ready states—mirroring Phoenix terminology as closely as Pine allows.
 
-**Note:** In the full Agent Phoenix repo, Pine sources live under **`Trading_View/*.pine`**. This Project Cursor bundle may not include that folder; sync from the parent repo or copy Pine files here if you want a single portable tree.
+**Note:** Portable Pine sources ship under **`Trading_View/`** in this bundle (`README.md` there). Sync from the full Agent Phoenix monorepo if you need additional `.pine` variants.
 
 **Concrete aims:**
 
-- One clear **indicator** (and/or strategy) per instrument family as needed, sharing inputs with Python parameter names where practical.
-- Document alert JSON / message fields so they map to Phoenix terminology (`range sealed`, `tap`, `breakout`, `arm`).
-- Accept that TV **will not** match Python tick-for-tick; goals are **visual alignment + trader-facing alerts**, not parity certification.
+- [x] One clear **indicator** mirroring MNQ locked inputs: `Trading_View/phoenix_range_mnq.pine` (duplicate & retune inputs for CL/MGC/YM families).
+- [x] Document alert message fields → Phoenix terms: `Trading_View/README.md`.
+- [x] Accept that TV **will not** match Python tick-for-tick; goals are **visual alignment + trader-facing alerts**, not parity certification.
 
 ---
 
@@ -153,3 +182,22 @@ Set **explicit numeric gates** for each release candidate (example placeholders�
 - Revisit this file **after major logic changes**, **preset changes**, or **new prop evaluations**.
 - When targets move (e.g. $25k/month hypothesis), update **Section 4** with the evidence window and methodology.
 - When prop farming thresholds are ratcheted, update **Section 5** tasks and any numeric gates in **Section 3**.
+
+---
+
+## 10. Repository validation closure (honest summary)
+
+This section records what **can** be satisfied inside the portable repo vs what remains **environment-dependent**.
+
+| Section | Closed in-repo? | Notes |
+|--------|-----------------|-------|
+| §1 | Mostly | Pinned kit (`evaluation_kit.yaml` + scripts); replay vs batch report exists; **live skip-bucket drift** 🔒 needs Gateway telemetry. |
+| §2 | Yes (research) | Four presets exercised batch/replay/prop tooling; live rule execution 🔒 broker/prop. |
+| §3 | Yes (documented) | Metrics + checklist gates tied to generated reports; team “acceptable ratio” thresholds still yours to ratchet. |
+| §4 | Explainability | **\$25k+/mo hypothesis not met** on pinned batch snapshot — evidence table in §4; research-only. |
+| §5 | Yes | CSV wiring script + compare tables + MC vs rolling stress doc; formal profit minimums remain team-owned. |
+| §6 | Partial | Offline `phoenix_local_scan_once.py` validates engine path; **full ProjectX live** 🔒 credentials + account. |
+| §7 | Partial | Python exports + verify script ready; **NT8 CSV exports** 🔒 desktop. |
+| §8 | Baseline | MNQ Pine indicator + README shipped; extend inputs per instrument as needed. |
+| §9 | Ongoing | Human process — keep revisiting after changes. |
+

@@ -32,7 +32,11 @@ All bar-file expectations (parquet names, DataBento CSV columns, symbol filters,
 
 ## Prop economics
 
-Monte Carlo prop-firm farming on exported trades: **`prop_farming_calculator/`** (CLI, `presets.yaml`, outputs under `output/<firm>/run_*`). Goals and task checklist: **`goals.md`** §3–5.
+Monte Carlo prop-firm farming on exported trades: **`prop_farming_calculator/`** (CLI, `presets.yaml`, outputs under `output/<firm>/run_*`). Goals and task checklist: **`goals.md`** §3–5. MC vs rolling historical interpretation: **`docs/MC_VS_ROLLING_PROP_STRESS.md`**.
+
+## TradingView
+
+Pine overlay starter + alert notes: **`Trading_View/`** (`goals.md` §8).
 
 ## Parity and ops
 

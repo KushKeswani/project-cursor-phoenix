@@ -1,0 +1,42 @@
+# Pinned evaluation kit — regenerate stats from this manifest (goals.md §1).
+# Override dates only when intentionally advancing the evidence window.
+version: 1
+
+data_dir: Data-DataBento
+normalization_manifest: Data-DataBento/normalization_summary.csv
+
+oos_export:
+  start: "2020-01-01"
+  end: "2026-04-29"
+
+replay_calendar:
+  calendar_year: 2025
+  start: "2025-01-01"
+  end: "2025-12-31"
+  step_mode: bar
+  bars_window: session_day
+  quiet_stdout: true
+
+portfolio_presets:
+  - Balanced_50k_survival
+  - Balanced_50k_high
+  - Balanced_150k_survival
+  - Balanced_150k_high
+
+artifacts:
+  batch_backtester: reports/instrument_performance.csv
+  portfolio_reports_glob: reports/*_*_*_*_BACKTEST_REPORT.md
+  live_replay_vs_batch: reports/LIVE_REPLAY_VS_BACKTEST.md
+  prop_compare: reports/prop_sim_compare/COMPARE_PROP_SIM.md
+  trade_executions_oos: reports/trade_executions/oos/instruments
+
+prop_farming_baseline:
+  firm_name_prefix: EvalKit
+  n_sims: 1500
+  seed: 42
+  cohort_horizon: "6 Months"
+  firm_presets:
+    Balanced_50k_survival: { portfolio: "50k-survival", firm_preset: "phoenix_topstep_50k" }
+    Balanced_50k_high: { portfolio: "50k-high", firm_preset: "phoenix_topstep_50k" }
+    Balanced_150k_survival: { portfolio: "150k-survival", firm_preset: "phoenix_topstep_150k" }
+    Balanced_150k_high: { portfolio: "150k-high", firm_preset: "phoenix_topstep_150k" }

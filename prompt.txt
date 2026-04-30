@@ -1,0 +1,38 @@
+You are working inside this repository only.
+
+First read:
+1. README.md
+2. CONTEXT_FOR_AGENT.md
+3. goals.md
+4. docs/PHOENIX_AI_KNOWLEDGE.md
+5. docs/DATABENTO_KNOWLEDGE.md
+6. docs/PHOENIX_LIVE_TRADING_AND_BACKTEST_PARITY.md
+
+Your mission is to validate and improve the Phoenix range-breakout stack until the work is genuinely complete.
+
+Do not stop after one test, one short backtest, or one promising metric. Continue the full loop:
+- baseline tests
+- full-range backtests using Data-DataBento root parquet files
+- replay checks
+- prop farming simulations
+- ProjectX help/static checks
+- NT8 fidelity checks if exports exist
+- logging of commands, artifacts, metrics, and blockers
+
+Use goals.md as the rubric. Track max drawdown, worst day, worst month, losing streaks, drawdown duration, win rate, profit factor, expectancy, monthly profile, replay-vs-batch deltas, and prop-farming ROI/pass-rate metrics.
+
+Important rules:
+- Treat income goals as hypotheses to stress-test, not guarantees.
+- Do not declare victory unless full-range reproducible evidence supports it.
+- If data is missing, credentials are missing, or exports are missing, document the exact blocker.
+- Maintain AGENT_SESSION_LOG.md as an append-only running log.
+- Send Telegram updates if configured; otherwise log that Telegram was skipped.
+- Keep changes small, measurable, and reversible.
+- Do not commit real secrets from .env.
+
+Stop only when one of these is true:
+1. All feasible validation and improvement paths in this repo are complete and documented.
+2. You hit a hard blocker that cannot be resolved from this repo, and the blocker is clearly logged.
+3. I explicitly tell you to stop.
+
+Start now by reading the required docs, then inspect the available data range, run the baseline tests, and continue until complete.

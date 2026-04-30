@@ -216,6 +216,9 @@ Parity caveats (stops vs close, tick rounding, partial bars): **`docs/PHOENIX_LI
 | `docs/AGENT_PHOENIX_V2_LIVE.md` | NT8 + ProjectX live checklist. |
 | `docs/STRATEGY_LOGIC_EXPLAINED.md` | Strategy semantics. |
 | `nt8/README.md` | NT8 install and strategy list. |
+| **`evaluation_kit.yaml`** | Pinned evaluation manifest (`goals.md` §1); run `python scripts/run_evaluation_kit.py`. |
+| `docs/MC_VS_ROLLING_PROP_STRESS.md` | Prop MC vs rolling historical interpretation (`goals.md` §5). |
+| **`Trading_View/README.md`** | TradingView Pine starter (`goals.md` §8). |
 
 ## Disclaimer
 

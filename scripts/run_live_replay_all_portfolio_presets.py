@@ -330,6 +330,7 @@ def _run_live_replay_preset_worker(payload: dict[str, object]) -> dict[str, obje
         "--step-mode",
         "bar",
         "--no-sleep",
+        "--quiet",
         "--instruments",
         inst,
         "--contracts",

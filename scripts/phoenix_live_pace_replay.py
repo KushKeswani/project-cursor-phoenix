@@ -281,6 +281,11 @@ def main() -> int:
         help="Stop after this many iterations (safety)",
     )
     p.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Suppress per-step stdout lines (useful for long bar-mode runs).",
+    )
+    p.add_argument(
         "--entry-fill-mode",
         default="touch",
         choices=("touch", "touch_legacy", "touch_strict", "next_bar_open", "stop_market"),
@@ -561,7 +566,8 @@ def main() -> int:
                     "NEW=" + ",".join(trade_fingerprint(h[0], h[1]) for h in hits)
                 )
             line = " | ".join(parts_ln)
-            print(line, flush=True)
+            if not args.quiet:
+                print(line, flush=True)
             if trace_fh:
                 trace_payload: dict[str, Any] = {
                     "as_of_et": as_of.isoformat(),

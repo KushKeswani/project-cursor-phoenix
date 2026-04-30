@@ -1,0 +1,60 @@
+//@version=5
+// Phoenix-style opening range + breakout levels (MNQ locked defaults from scripts/configs/strategy_configs.py).
+// Chart timeframe should match bar_minutes for the instrument (MNQ = 5m).
+indicator("Phoenix ORB — MNQ mirror", shorttitle="Phx MNQ", overlay=true, max_boxes_count=120, max_lines_count=120)
+
+float tickSz       = input.float(0.25, "Tick size", tooltip="MNQ default")
+int entryOffTicks  = input.int(2, "entry_tick_offset (ticks)", minval=0)
+int rngStartH      = input.int(9, "range_start hour ET")
+int rngStartM      = input.int(35, "range_start minute ET")
+int rngEndH        = input.int(9, "range_end hour ET")
+int rngEndM        = input.int(55, "range_end minute ET")
+int tradeStartH    = input.int(11, "trade_start hour ET")
+int tradeStartM    = input.int(0, "trade_start minute ET")
+int tradeEndH      = input.int(13, "trade_end hour ET")
+int tradeEndM      = input.int(0, "trade_end minute ET")
+bool exclWeekend   = input.bool(true, "Exclude Sat/Sun")
+
+int rngStart = rngStartH * 60 + rngStartM
+int rngEnd   = rngEndH * 60 + rngEndM
+int trdStart = tradeStartH * 60 + tradeStartM
+int trdEnd   = tradeEndH * 60 + tradeEndM
+
+int tmin = hour(time, "America/New_York") * 60 + minute(time, "America/New_York")
+int wd = dayofweek(time, "America/New_York")
+int dy = dayofyear(time, "America/New_York")
+
+bool skipDay = exclWeekend and (wd == dayofweek.saturday or wd == dayofweek.sunday)
+
+var float rngHi = na
+var float rngLo = na
+var bool sealed = false
+
+bool newNyDay = ta.change(dy) != 0
+if newNyDay
+    rngHi := na
+    rngLo := na
+    sealed := false
+
+if not skipDay
+    if not sealed
+        if tmin >= rngStart and tmin < rngEnd
+            rngHi := na(rngHi) ? high : math.max(rngHi, high)
+            rngLo := na(rngLo) ? low : math.min(rngLo, low)
+        if not na(rngHi) and tmin >= rngEnd
+            sealed := true
+
+float longLevel = sealed ? rngHi + entryOffTicks * tickSz : na
+float shortLevel = sealed ? rngLo - entryOffTicks * tickSz : na
+
+bool inTradeWin = tmin >= trdStart and tmin < trdEnd
+bool armed = sealed and inTradeWin
+
+plot(longLevel, title="long_level", color=color.new(color.teal, 0), linewidth=2)
+plot(shortLevel, title="short_level", color=color.new(color.orange, 0), linewidth=2)
+
+bool sealPulse = sealed and not sealed[1]
+bgcolor(armed ? color.new(color.blue, 93) : na)
+
+alertcondition(sealPulse, title="Phoenix range sealed", message="range_sealed instrument=MNQ")
+alertcondition(armed and not armed[1], title="Phoenix armed (trade window)", message="armed instrument=MNQ")

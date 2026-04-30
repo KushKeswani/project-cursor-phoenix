@@ -1,0 +1,12 @@
+{
+  "primary_horizon_label": "6 Months",
+  "primary_horizon_trading_days": 126.0,
+  "requested_cohort_horizon_label": "6 Months",
+  "audition_pass_pct_mc_single_lifecycle": 82.83333333333333,
+  "audition_pass_pct_rolling_history": 80.90452261306532,
+  "mean_trading_days_to_pass_audition_mc": 2.5754527162977867,
+  "mean_trading_days_to_first_payout_mc": 10.39937106918239,
+  "mean_funded_trading_days_to_first_payout_mc": 7.584905660377358,
+  "pct_simulations_with_any_payout_mc": 53.0,
+  "notes": "MC columns: single-lifecycle Monte Carlo for the primary horizon only. Pass rate is over all sim paths. Days-to-pass is mean over paths that pass. Days-to-payout is mean over paths with at least one payout (trading days). rolling_history pass % uses every contiguous eval window on the actual daily pool."
+}
